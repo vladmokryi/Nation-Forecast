@@ -1,6 +1,12 @@
+.wrapper {
+  display: flex;
+  flex-flow: column wrap;
+}
+
 .container {
-  max-width: 980px;
-  width: 100%;
-  padding: 15px;
-  margin: 0 auto;
+  padding: 0.5em;
+  margin-left: 3%;
+  margin-right: 3%;
+  border: solid 5px #c9c9c9;
+  border-top: none;
 }

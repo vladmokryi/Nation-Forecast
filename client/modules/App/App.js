@@ -6,9 +6,7 @@ import styles from './App.css';
 
 // Import Components
 import Helmet from 'react-helmet';
-import DevTools from './components/DevTools';
 import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
 
 // Import Actions
 import { toggleAddPost } from './AppActions';
@@ -24,18 +22,13 @@ export class App extends Component {
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
-  toggleAddPostSection = () => {
-    this.props.dispatch(toggleAddPost());
-  };
-
   render() {
     return (
       <div>
-        {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
         <div>
           <Helmet
-            title="MERN Starter - Blog App"
-            titleTemplate="%s - Blog App"
+            title="National Forecast"
+            titleTemplate="%s - National Forecast"
             meta={[
               { charset: 'utf-8' },
               {
@@ -48,15 +41,15 @@ export class App extends Component {
               },
             ]}
           />
-          <Header
-            switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
-            intl={this.props.intl}
-            toggleAddPost={this.toggleAddPostSection}
-          />
-          <div className={styles.container}>
-            {this.props.children}
+          <div className={styles.wrapper}>
+            <Header
+              switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
+              intl={this.props.intl}
+            />
+            <div className={styles.container}>
+              {this.props.children}
+            </div>
           </div>
-          <Footer />
         </div>
       </div>
     );

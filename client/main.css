@@ -8,6 +8,8 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	line-height: normal;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
 }
 
 ::-webkit-input-placeholder {
@@ -28,7 +30,8 @@ input:-moz-placeholder {
 }
 
 body {
-	background: #FFF;
-	font-family: 'Lato', sans-serif;
+  background: #f8f8f8;
+	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
+  font-weight: 400;
 }

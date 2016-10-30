@@ -83,9 +83,10 @@ export function calculate(req, res) {
       });
       item.min /= allRating;
       item.max /= allRating;
+      item.avg = (item.min + item.max) / 2;
       list.push(item);
     }
-    res.status(200).send({calculate: list, forecasts: req.forecasts});
+    res.status(200).send({forecast: {date: new Date(), list}, providers: req.forecasts});
   } else {
     res.status(500).end();
   }
@@ -119,6 +120,7 @@ export function getOpenweathermap(data, callback) {
           date: new Date(+day.dt * 1000),
           min: parseFloat(day.temp.min),
           max: parseFloat(day.temp.max),
+          avg: (parseFloat(day.temp.min) + parseFloat(day.temp.max)) / 2,
           weather: day.weather
         });
       });
@@ -152,6 +154,7 @@ export function getApixu(data, callback) {
           date: new Date(day.date),
           min: parseFloat(day.day.mintemp_c),
           max: parseFloat(day.day.maxtemp_c),
+          avg: (parseFloat(day.day.mintemp_c) + parseFloat(day.day.maxtemp_c)) / 2,
           weather: day.day.condition
         });
       });

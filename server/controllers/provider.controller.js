@@ -28,3 +28,9 @@ export function allRating(req, res, next) {
     res.status(500).end();
   }
 }
+
+export function getAll(req, res) {
+  Provider.find().then(providers => {
+    res.status(200).send({providers});
+  }).catch(err => res.status(500).end());
+}

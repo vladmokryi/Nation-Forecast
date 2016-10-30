@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  margin-bottom: 0.5em;
+  flex-direction: column;
+  border: solid 5px #c9c9c9;
+  border-bottom: none;
+}
+
+.provider {
+  padding: 0.5em;
+  border-bottom: solid 5px #c9c9c9;
+  font-size: 90%;
+  display: flex;
+}
+.provider .name {
+  flex: 1;
+}
+
+.provider .name span{
+  display: block;
+  padding: 5px 0;
+}
+
+.provider .name a {
+  color: #00AFF0;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.provider .name a:hover {
+  color: inherit;
+}
+
+.provider .weather {
+  flex: 3;
+  display: flex;
+}
+.provider .weather > div {
+  flex: 1;
+  text-align: center;
+}
+
+.provider .weather > div .avg {
+  display: inline-block;
+  width: 34px;
+  color: #9d9d9d;
+  font-size: 11px;
+}
+
+.provider .weather > div .avg span {
+  display: block;
+  font-size: 17px;
+  color: #000;
+}

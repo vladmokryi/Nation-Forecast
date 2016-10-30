@@ -8,8 +8,8 @@ export default function () {
 
     let providers = [];
 
-    providers.push(new Provider({name: 'openweathermap'}));
-    providers.push(new Provider({name: 'apixu'}));
+    providers.push(new Provider({name: 'openweathermap', displayName: 'OpenWeatherMap', link: 'https://openweathermap.org/'}));
+    providers.push(new Provider({name: 'apixu', displayName: 'APIXU', link: 'https://www.apixu.com/'}));
 
     Provider.create(providers, (error) => {
       if (!error) {

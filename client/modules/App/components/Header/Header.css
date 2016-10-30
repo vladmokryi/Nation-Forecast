@@ -1,47 +1,35 @@
 .header {
-  background: #eee url('../../header-bk.png') center;
-  background-size: cover;
-  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  margin-left: 3%;
+  margin-right: 3%;
+  background: #00AFF0;
+  color: #f8f8f8;
 }
 
-.content {
-  width: 100%;
-  max-width: 980px;
-  margin: auto;
-  padding: 64px 16px;
-  overflow: auto;
+.user-bar, .logo {
+  margin: 10px;
 }
 
-.site-title {
-  font-weight: 300;
-  font-size: 42px;
-  float: left;
+.logo {
+  margin: 10px;
+  padding: 2px;
 }
 
-.site-title a {
+.logo a{
   text-decoration: none;
-  color: #FFF;
-}
-
-.add-post-button {
-  display: inline-block;
-  color: #FFF;
-  background: #03A9F4;
-  padding: 8px 16px;
-  text-decoration: none;
-  border-radius: 1000px;
-  float: right;
+  font-weight: 700;
+  color: #f8f8f8;
+  font-size: 130%;
 }
 
 .language-switcher {
-  background: rgba(0, 0, 0, 0.1);
+  flex: 1;
 }
 
 .language-switcher ul {
   list-style: none;
-  width: 980px;
   margin: auto;
-  text-align: right;
 }
 
 .language-switcher li {
@@ -49,20 +37,4 @@
   margin: 10px;
   padding: 5px;
   cursor: pointer;
-  color: #fff;
-}
-
-.language-switcher li:first-child {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.selected {
-  border-bottom: 1px solid #fff;
-}
-
-@media (max-width: 767px){
-  .add-post-button{
-    float: left;
-    margin-top: 16px;
-  }
 }

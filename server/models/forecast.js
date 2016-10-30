@@ -15,6 +15,7 @@ const forecastSchema = new Schema({
     date: { type: 'Date'},
     min: { type: Number },
     max: { type: Number },
+    avg: { type: Number },
     weather: {}
   }],
   createdAt: { type: 'Date', default: Date.now},
