@@ -7,16 +7,17 @@
 }
 
 .provider {
-  padding: 0.5em;
   border-bottom: solid 5px #c9c9c9;
   font-size: 90%;
   display: flex;
 }
 .provider .name {
   flex: 1;
+  align-self: center;
+  padding: 0.5em;
 }
 
-.provider .name span{
+.provider .name > span{
   display: block;
   padding: 5px 0;
 }
@@ -33,23 +34,23 @@
 }
 
 .provider .weather {
+  padding: 0.5em;
   flex: 3;
   display: flex;
+  border-left: solid 5px #c9c9c9;
 }
 .provider .weather > div {
+  align-self: center;
   flex: 1;
   text-align: center;
 }
 
-.provider .weather > div .avg {
-  display: inline-block;
-  width: 34px;
-  color: #9d9d9d;
-  font-size: 11px;
-}
-
 .provider .weather > div .avg span {
   display: block;
-  font-size: 17px;
-  color: #000;
+  color: #9d9d9d;
+  font-size: 80%
+}
+
+.provider .give-rating {
+  border-right: solid 5px #c9c9c9;
 }

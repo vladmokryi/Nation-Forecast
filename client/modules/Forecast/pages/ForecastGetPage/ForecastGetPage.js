@@ -1,16 +1,20 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {fetchForecast, fetchProviders} from '../../ForecastActions';
+import {fetchForecast, fetchProviders, setForecast} from '../../ForecastActions';
 import {getForecast, getProviders} from '../../ForecastReducer';
 import ForecastSearchInput from '../../components/ForecastSearchInput/ForecastSearchInput';
 import ForecastProviders from '../../components/ForecastProviders/ForecastProviders';
 import ForecastLocationMap from '../../components/ForecastLocationMap/ForecastLocationMap';
+import ForecastCurrent from '../../components/ForecastCurrent/ForecastCurrent';
 import {geocodeByAddress} from 'react-places-autocomplete'
+import styles from './ForecastGetPage.css';
 
 class ForecastGetPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {address: ''};
+    this.state = {address: '', marker: {
+      defaultAnimation: 2,
+    } };
     this.onChange = (address) => this.setState({address});
   }
 
@@ -25,10 +29,14 @@ class ForecastGetPage extends Component {
     geocodeByAddress(address, (err, {lat, lng}) => {
       if (err) {
         console.log('Oh no!', err)
+      } else {
+        let marker = this.state.marker;
+        marker.position = {lat, lng};
+        this.setState({marker: marker});
+        this.props.dispatch(setForecast({}));
+        this.props.dispatch(fetchForecast({lat, lon: lng}));
       }
-      console.log(`Yay! got latitude and longitude for ${address}`, {lat, lng});
-      this.props.dispatch(fetchForecast({lat, lon: lng}));
-    })
+    });
   }
 
   render() {
@@ -36,7 +44,10 @@ class ForecastGetPage extends Component {
       <div>
         <ForecastSearchInput onSubmit={this.handleFormSubmit.bind(this)}
                              address={this.state.address} onChange={this.onChange.bind(this)}/>
-        <ForecastLocationMap/>
+        <div className={styles["forecast-container"]}>
+          {this.state.marker.position && <ForecastLocationMap marker={this.state.marker}/>}
+          {this.state.marker.position && <ForecastCurrent forecast={this.props.forecast}/>}
+        </div>
         <ForecastProviders providers={this.props.providers}/>
       </div>
     );

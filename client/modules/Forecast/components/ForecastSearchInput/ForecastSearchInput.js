@@ -12,7 +12,7 @@ function ForecastSearchInput(props) {
         hideLabel={true}
         placeholder="Your place name..."
       />
-      <button type="submit"><FormattedMessage id="submit"/></button>
+      <button type="submit"><FormattedMessage id="search_title"/></button>
     </form>
   );
 }

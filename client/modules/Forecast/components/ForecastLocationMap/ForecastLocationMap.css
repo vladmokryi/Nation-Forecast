@@ -1,0 +1,11 @@
+.map-outer {
+  flex: 1;
+  height: 200px;
+  border: solid 5px #c9c9c9;
+}
+
+.map-inner {
+  height: 100%;
+}
+
+

@@ -37,3 +37,7 @@ export function fetchProviders() {
   };
 }
 
+export function clearForecast() {
+
+}
+

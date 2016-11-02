@@ -1,0 +1,53 @@
+.forecast-current {
+  flex: 3;
+  border: solid 5px #c9c9c9;
+  margin-left: 0.5em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  display: flex;
+}
+
+.forecast-current .day {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #c9c9c9;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.forecast-current .day:last-child {
+  border-right: none;
+}
+
+.forecast-current .day p.day-of-week{
+  font-size: 1.4em;
+  flex: 1;
+}
+
+.forecast-current .day p.date{
+  font-size: 2em;
+  flex: 1;
+}
+
+.forecast-current .day p.month{
+  font-size: 1.2em;
+  flex: 1;
+}
+
+.forecast-current .day .min > span, .forecast-current .day .max > span {
+  display: inline-block;
+  color: #9d9d9d;
+  font-size: 80%;
+}
+
+.forecast-current .day .min, .forecast-current .day .max {
+  flex: 1;
+}
+
+
+.forecast-current .day .temperature {
+  display: flex;
+  flex: 1;
+}

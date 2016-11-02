@@ -8,13 +8,23 @@ import styles from './Header.css';
 
 export function Header(props, context) {
   const languageNodes = props.intl.enabledLanguages.map(
-    lang => (
-      <span key={lang} onClick={() => props.switchLanguage(lang)} className={lang === props.intl.locale ? styles.selected : ''}>
+    lang => {
+      //костыль
+      let icon = '';
+      if (lang == 'en') {
+        icon = '_england'
+      } else if (lang == 'uk') {
+        icon = 'UA';
+      } else {
+        icon = lang.toUpperCase();
+      }
+      return (
+      <li key={lang} onClick={() => props.switchLanguage(lang)} className={lang === props.intl.locale ? styles.selected : ''}>
          <Flag
-           name={lang.toUpperCase()}
+           name={icon}
          />
-      </span>
-    )
+      </li>
+    )}
   );
 
   return (
