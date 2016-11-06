@@ -82,7 +82,7 @@ const renderFullPage = (html, initialState) => {
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'/>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=${serverConfig.google.apikey}&libraries=geometry,places,visualization"></script>
-        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
+        <link rel="shortcut icon" href="/img/favicon.ico" type="image/png" />
       </head>
       <body>
         <div id="root">${html}</div>

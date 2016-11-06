@@ -1,42 +1,33 @@
-.container {
+form {
   display: flex;
-  flex-direction: row;
-  margin-bottom: 0.5em;
-}
-.container > .autocomplete-container {
-  flex: 1;
+  flex-direction: column;
 }
 
-.autocomplete-container .autocomplete-input{
+.email-input, .password-input, .password-repeat-input {
   display: block;
   margin: 0;
   font-family: sans-serif;
   font-size: 18px;
   box-shadow: none;
-  width: 100%;
+  flex: 1;
   padding: 10px;
   border: solid 5px #c9c9c9;
-  border-right: none;
+  margin-bottom: 1em;
 }
 
-.autocomplete-container .autocomplete-input:focus {
+.email-input:focus, .password-input:focus, .password-repeat-input:focus{
   outline: none;
   border: solid 5px #00AFF0;
-  border-right: none;
 }
 
-.container .search-btn:hover {
-  border-color: #00AFF0;
-}
-
-.container .search-btn {
+.submit-btn {
   outline: none;
-  display: inline-block;
+  display: block;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
   box-shadow: none;
   border-radius: 0;
-
+  flex: 1;
   padding: 0.4em;
   cursor: pointer;
 
@@ -51,3 +42,6 @@
   text-decoration: none;
 }
 
+.submit-btn:hover {
+  border-color: #00AFF0;
+}

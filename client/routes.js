@@ -17,6 +17,8 @@ if (typeof require.ensure !== 'function') {
 if (process.env.NODE_ENV !== 'production') {
   // Require async routes only in development for react-hot-reloader to work.
   require('./modules/Forecast/pages/ForecastGetPage/ForecastGetPage');
+  require('./modules/User/components/SignUpWidget/SignUpWidget');
+  require('./modules/User/components/SignInWidget/SignInWidget');
 }
 
 // react-router setup with code-splitting

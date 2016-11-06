@@ -39,3 +39,9 @@
   padding: 5px;
   cursor: pointer;
 }
+
+.user-bar a{
+  color: #fff;
+  margin-left: 5px;
+  margin-right: 5px;
+}

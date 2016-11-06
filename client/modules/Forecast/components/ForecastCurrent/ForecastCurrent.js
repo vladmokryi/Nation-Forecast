@@ -22,11 +22,11 @@ export default function ForecastCurrent(props) {
             <div className={styles.temperature}>
               <div className={styles.min}>
                 <FormattedMessage id="min_title"/>
-                <div>{day.min.toFixed(2)}&deg;</div>
+                <div>{day.min.toFixed(1)}&deg;</div>
               </div>
               <div className={styles.max}>
                 <FormattedMessage id="max_title"/>
-                <div>{day.max.toFixed(2)}&deg;</div>
+                <div>{day.max.toFixed(1)}&deg;</div>
               </div>
             </div>
           </div>

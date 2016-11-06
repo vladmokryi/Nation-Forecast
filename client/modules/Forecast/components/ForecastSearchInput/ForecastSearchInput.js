@@ -4,15 +4,21 @@ import styles from  './ForecastSearchInput.css';
 import PlacesAutocomplete from 'react-places-autocomplete'
 
 function ForecastSearchInput(props) {
+  const cssClasses = {
+    root: styles['autocomplete-container'],
+    input: styles['autocomplete-input']
+  };
   return (
     <form onSubmit={props.onSubmit} className={styles.container}>
       <PlacesAutocomplete
         value={props.address}
         onChange={props.onChange}
+        onSelect={props.onSelect}
         hideLabel={true}
-        placeholder="Your place name..."
+        classNames={cssClasses}
+        placeholder={props.intl.formatMessage({id: "search_placeholder"})}
       />
-      <button type="submit"><FormattedMessage id="search_title"/></button>
+      <button className={styles["search-btn"]} type="submit"><FormattedMessage id="search_title"/></button>
     </form>
   );
 }

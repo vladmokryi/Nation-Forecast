@@ -12,38 +12,52 @@ import styles from './ForecastGetPage.css';
 class ForecastGetPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {address: '', marker: {
-      defaultAnimation: 2,
-    } };
-    this.onChange = (address) => this.setState({address});
+    this.state = {
+      address: '', marker: {}
+    };
   }
+
+  onChangeInput = (address) => {
+    this.setState({address});
+  };
+
+  onSelectInput = (address) => {
+    this.setState({address}, this.handleFormSubmit);
+  };
 
   componentDidMount() {
     this.props.dispatch(fetchProviders());
   }
 
   handleFormSubmit(event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     const {address} = this.state;
 
-    geocodeByAddress(address, (err, {lat, lng}) => {
-      if (err) {
-        console.log('Oh no!', err)
-      } else {
-        let marker = this.state.marker;
-        marker.position = {lat, lng};
-        this.setState({marker: marker});
-        this.props.dispatch(setForecast({}));
-        this.props.dispatch(fetchForecast({lat, lon: lng}));
-      }
-    });
+    if (address) {
+      geocodeByAddress(address, (err, {lat, lng}) => {
+        if (err) {
+          console.log('Oh no!', err)
+        } else {
+          let marker = this.state.marker;
+          marker.position = {lat, lng};
+          this.setState({marker: marker});
+          this.props.dispatch(setForecast({}));
+          this.props.dispatch(fetchForecast({lat, lon: lng}));
+        }
+      });
+    } else {
+      this.setState({marker: {}});
+    }
   }
 
   render() {
     return (
       <div>
         <ForecastSearchInput onSubmit={this.handleFormSubmit.bind(this)}
-                             address={this.state.address} onChange={this.onChange.bind(this)}/>
+                             address={this.state.address} onChange={this.onChangeInput.bind(this)}
+                             onSelect={this.onSelectInput.bind(this)}/>
         <div className={styles["forecast-container"]}>
           {this.state.marker.position && <ForecastLocationMap marker={this.state.marker}/>}
           {this.state.marker.position && <ForecastCurrent forecast={this.props.forecast}/>}

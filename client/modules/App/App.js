@@ -9,7 +9,6 @@ import Helmet from 'react-helmet';
 import Header from './components/Header/Header';
 
 // Import Actions
-import { toggleAddPost } from './AppActions';
 import { switchLanguage } from '../../modules/Intl/IntlActions';
 
 export class App extends Component {
@@ -44,7 +43,7 @@ export class App extends Component {
           <div className={styles.wrapper}>
             <Header
               switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
-              intl={this.props.intl}
+              languages={this.props.intl.enabledLanguages}
             />
             <div className={styles.container}>
               {this.props.children}

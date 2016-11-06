@@ -24,3 +24,7 @@ export default function callApi(endpoint, method = 'get', body) {
     error => error
   );
 }
+
+export function isLoggedIn() {
+  return false;
+}
