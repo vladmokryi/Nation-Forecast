@@ -1,5 +1,5 @@
-import { SET_FORECAST, SET_PROVIDERS } from './ForecastActions';
-
+import { SET_FORECAST, SET_PROVIDERS, UPDATE_PROVIDERS } from './ForecastActions';
+import _ from 'lodash';
 // Initial State
 const initialState = { providers: [], forecast: {} };
 
@@ -16,6 +16,20 @@ const ForecastReducer = (state = initialState, action) => {
       return {
         ...state,
         providers: action.providers,
+      };
+
+    case UPDATE_PROVIDERS:
+      let providers = [...state.providers];
+      _.forEach(providers, (oldProvider, index) => {
+        _.forEach(action.providers, (newProvider) => {
+          if(newProvider.provider._id == oldProvider.provider._id) {
+            providers[index] = newProvider;
+          }
+        })
+      });
+      return {
+        ...state,
+        providers: providers
       };
 
     default:

@@ -10,6 +10,7 @@ import Header from './components/Header/Header';
 
 // Import Actions
 import { switchLanguage } from '../../modules/Intl/IntlActions';
+import {isLoggedIn} from '../../util/apiCaller';
 
 export class App extends Component {
   constructor(props) {
@@ -44,6 +45,8 @@ export class App extends Component {
             <Header
               switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
               languages={this.props.intl.enabledLanguages}
+              dispatch={this.props.dispatch}
+              isLoggedIn={this.props.isLoggedIn}
             />
             <div className={styles.container}>
               {this.props.children}
@@ -65,6 +68,7 @@ App.propTypes = {
 function mapStateToProps(store) {
   return {
     intl: store.intl,
+    isLoggedIn: isLoggedIn()
   };
 }
 

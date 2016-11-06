@@ -1,8 +1,9 @@
-import callApi, {callApiForm} from '../../util/apiCaller';
+import callApi from '../../util/apiCaller';
 import _ from 'lodash';
 
 export const SET_FORECAST = 'SET_FORECAST';
 export const SET_PROVIDERS = 'SET_PROVIDERS';
+export const UPDATE_PROVIDERS = 'UPDATE_PROVIDERS';
 
 export function setForecast(forecast) {
   return {
@@ -18,11 +19,18 @@ export function setProviders(providers) {
   };
 }
 
+export function updateProviders(providers) {
+  return {
+    type: UPDATE_PROVIDERS,
+    providers,
+  };
+}
+
 export function fetchForecast(data) {
   return (dispatch) => {
     return callApi(`forecast?lat=${data.lat}&lon=${data.lon}`).then(res => {
       dispatch(setForecast(res.forecast));
-      dispatch(setProviders(res.providers));
+      dispatch(updateProviders(res.providers));
     }).catch(err=> console.log(err));
   };
 }
@@ -36,8 +44,3 @@ export function fetchProviders() {
     });
   };
 }
-
-export function clearForecast() {
-
-}
-

@@ -1,4 +1,4 @@
-import Express from 'express';
+import Express, {Router}  from 'express';
 import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
@@ -34,8 +34,12 @@ import routes from '../client/routes';
 import { fetchComponentData } from './util/fetchData';
 import forecasts from './routes/forecast.routes';
 import providers from './routes/provider.routes';
+import auth from './routes/auth.routes';
+import users from './routes/user.routes';
+import ratings from './routes/rating.routes';
 import initData from './initData';
 import serverConfig from './config';
+import User from './models/user';
 
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
@@ -51,14 +55,42 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
   initData();
 });
 
+import passport from 'passport';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+
+var opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+opts.secretOrKey = serverConfig.jwt_token;
+
+passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+  User.findOne({ cuid: jwt_payload.sub }).then(user => {
+    if (user) {
+      done(null, user);
+    } else {
+      done(null, false);
+    }
+  }).catch(err => {
+    return done(err, false);
+  });
+}));
+
+const useRoutes = (routes) => {
+  let protectedMiddleware = passport.authenticate('jwt', { session: false });
+  app.use('/api', routes(new Router(), protectedMiddleware));
+};
+
 // Apply body Parser and server public assets and routes
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../dist')));
 app.use('/img', Express.static(path.resolve(__dirname, '../img') ));
-app.use('/api', forecasts);
-app.use('/api', providers);
+
+useRoutes(forecasts);
+useRoutes(providers);
+useRoutes(users);
+useRoutes(auth);
+useRoutes(ratings);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {

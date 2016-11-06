@@ -15,9 +15,15 @@
   flex: 1;
   align-self: center;
   padding: 0.5em;
+  display: flex;
+  flex-flow: row nowrap;
 }
 
-.provider .name > span{
+.provider .name > .info {
+  flex: 1;
+}
+
+.provider .name .rating{
   display: block;
   padding: 5px 0;
 }
@@ -52,5 +58,6 @@
 }
 
 .provider .give-rating {
-  border-right: solid 5px #c9c9c9;
+  cursor: pointer;
+  align-self: center;
 }

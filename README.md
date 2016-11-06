@@ -10,3 +10,8 @@ Nation's Forecast web app in MERN stack
 - https://www.wunderground.com/weather/api/d/docs?d=data/geolookup
 - http://www.apixu.com/doc/request.aspx
 - https://darksky.net/dev/docs/forecast
+
+## Watch all process in port 8000
+```bash
+lsof -i :8000
+```

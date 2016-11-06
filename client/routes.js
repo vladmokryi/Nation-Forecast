@@ -17,6 +17,10 @@ if (typeof require.ensure !== 'function') {
 if (process.env.NODE_ENV !== 'production') {
   // Require async routes only in development for react-hot-reloader to work.
   require('./modules/Forecast/pages/ForecastGetPage/ForecastGetPage');
+  require('./modules/Forecast/components/ForecastCurrent/ForecastCurrent');
+  require('./modules/Forecast/components/ForecastLocationMap/ForecastLocationMap');
+  require('./modules/Forecast/components/ForecastProviders/ForecastProviders');
+  require('./modules/Forecast/components/ForecastSearchInput/ForecastSearchInput');
   require('./modules/User/components/SignUpWidget/SignUpWidget');
   require('./modules/User/components/SignInWidget/SignInWidget');
 }

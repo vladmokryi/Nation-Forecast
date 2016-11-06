@@ -2,12 +2,15 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {fetchForecast, fetchProviders, setForecast} from '../../ForecastActions';
 import {getForecast, getProviders} from '../../ForecastReducer';
+import {getAllRatings} from '../../../User/UserReducer';
+import {setRating, getRatings} from '../../../User/UserActions';
 import ForecastSearchInput from '../../components/ForecastSearchInput/ForecastSearchInput';
 import ForecastProviders from '../../components/ForecastProviders/ForecastProviders';
 import ForecastLocationMap from '../../components/ForecastLocationMap/ForecastLocationMap';
 import ForecastCurrent from '../../components/ForecastCurrent/ForecastCurrent';
 import {geocodeByAddress} from 'react-places-autocomplete'
 import styles from './ForecastGetPage.css';
+import {isLoggedIn} from '../../../../util/apiCaller';
 
 class ForecastGetPage extends Component {
   constructor(props) {
@@ -22,14 +25,17 @@ class ForecastGetPage extends Component {
   };
 
   onSelectInput = (address) => {
-    this.setState({address}, this.handleFormSubmit);
+    this.setState({address}, this.handleFormSubmit.bind(this));
   };
 
   componentDidMount() {
     this.props.dispatch(fetchProviders());
+    if (this.props.isLoggedIn) {
+      this.props.dispatch(getRatings());
+    }
   }
 
-  handleFormSubmit(event) {
+  handleFormSubmit = (event) => {
     if (event) {
       event.preventDefault();
     }
@@ -50,7 +56,11 @@ class ForecastGetPage extends Component {
     } else {
       this.setState({marker: {}});
     }
-  }
+  };
+
+  onClickSetRate = (id) => {
+    this.props.dispatch(setRating(id, this.handleFormSubmit.bind(this)));
+  };
 
   render() {
     return (
@@ -62,7 +72,8 @@ class ForecastGetPage extends Component {
           {this.state.marker.position && <ForecastLocationMap marker={this.state.marker}/>}
           {this.state.marker.position && <ForecastCurrent forecast={this.props.forecast}/>}
         </div>
-        <ForecastProviders providers={this.props.providers}/>
+        <ForecastProviders providers={this.props.providers} ratings={this.props.ratings}
+                           onClick={this.onClickSetRate.bind(this)} isLoggedIn={this.props.isLoggedIn}/>
       </div>
     );
   }
@@ -76,7 +87,9 @@ ForecastGetPage.propTypes = {
 function mapStateToProps(store) {
   return {
     forecast: getForecast(store),
-    providers: getProviders(store)
+    providers: getProviders(store),
+    ratings: getAllRatings(store),
+    isLoggedIn: isLoggedIn()
   };
 }
 

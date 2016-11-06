@@ -1,30 +1,78 @@
 import fetch from 'isomorphic-fetch';
 import Config from '../../server/config';
+import { browserHistory } from 'react-router';
 
-export const API_URL = (typeof window === 'undefined' || process.env.NODE_ENV === 'test') ?
-  process.env.BASE_URL || (`http://localhost:${process.env.PORT || Config.port}/api`) :
-  '/api';
-
-export default function callApi(endpoint, method = 'get', body) {
-  return fetch(`${API_URL}/${endpoint}`, {
-    headers: { 'content-type': 'application/json' },
-    method,
-    body: JSON.stringify(body),
-  })
-  .then(response => response.json().then(json => ({ json, response })))
-  .then(({ json, response }) => {
-    if (!response.ok) {
-      return Promise.reject(json);
-    }
-
-    return json;
-  })
-  .then(
-    response => response,
-    error => error
-  );
+function generateApiUrl(relativePath) {
+  return (typeof window === 'undefined' || process.env.NODE_ENV === 'test') ?
+  process.env.BASE_URL || (`http://localhost:${process.env.PORT || Config.port}/${relativePath}`) : `/${relativePath}`;
 }
 
+export const API_URL = generateApiUrl('api');
+
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    if (typeof window !== 'undefined' && response.status === 401) {
+      localStorage.removeItem('authentication_token');
+      getAuthenticationToken();
+    } else {
+      var error = new Error(response.statusText);
+      error.response = response;
+      throw error
+    }
+    return Promise.reject(response);
+  }
+};
+
+const parseJSON = (response) => {
+  if (response && response.json) {
+    return response.json();
+  } else {
+    throw new Error('Response not contain JSON')
+  }
+};
+
+function fetchWrapper(url, requestOptions) {
+  return fetch(url, {
+    ...requestOptions,
+    headers: { ...requestOptions.headers, "Authorization": 'JWT ' + getAuthenticationToken() }
+  }).then((response)=> {
+    return checkStatus(response);
+  }).then(parseJSON)
+    .catch((error) => {
+      console.log('request failed', error);
+      throw error;
+    });
+}
+
+export default function callApi(endpoint, method = 'get', body) {
+  let requestOptions = {
+    headers: {
+      'content-type': 'application/json'
+    },
+    method,
+    body: JSON.stringify(body),
+  };
+
+  return fetchWrapper(`${API_URL}/${endpoint}`, requestOptions);
+}
+
+export function callApiForm(endpoint, method = 'get', body) {
+  let requestOptions = {
+    method,
+    body,
+  };
+
+  return fetchWrapper(`${API_URL}/${endpoint}`, requestOptions);
+}
+
+export const getAuthenticationToken = () => {
+  if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+    return localStorage.getItem("authentication_token");
+  }
+};
+
 export function isLoggedIn() {
-  return false;
+  return !!getAuthenticationToken();
 }

@@ -2,9 +2,9 @@ import React, {PropTypes, Component} from 'react';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import Flag from 'react-flags';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-import {isLoggedIn} from '../../../../util/apiCaller';
 import SignUpWidget from '../../../User/components/SignUpWidget/SignUpWidget';
 import SignInWidget from '../../../User/components/SignInWidget/SignInWidget';
+import {signOut} from '../../../User/UserActions';
 
 // Import Style
 import styles from './Header.css';
@@ -21,8 +21,8 @@ export class Header extends Component {
 
   handleClose = () => this.setState({isShowingModal: false});
 
-  signOut = () => {
-    console.log('signout');
+  onSignOut = () => {
+    this.props.dispatch(signOut())
   };
 
   render() {
@@ -59,12 +59,12 @@ export class Header extends Component {
           </ul>
         </div>
         <div className={styles['user-bar']}>
-          {!isLoggedIn() &&
+          {!this.props.isLoggedIn &&
           <div><a href="#" onClick={this.handleClick.bind(this, 'signin')}><FormattedMessage id="signin_action"/></a>
              <FormattedMessage id="or_text"/><a href="#"
                                                 onClick={this.handleClick.bind(this, 'signup')}><FormattedMessage
               id="signup_action"/></a></div>}
-          {isLoggedIn() && <a href="#" onClick={this.signOut.bind(this)}><FormattedMessage id="signout_action"/></a>}
+          {this.props.isLoggedIn && <a href="#" onClick={this.onSignOut.bind(this)}><FormattedMessage id="signout_action"/></a>}
         </div>
         {
           this.state.isShowingModal &&
@@ -87,6 +87,7 @@ Header.contextTypes = {
 Header.propTypes = {
   switchLanguage: PropTypes.func.isRequired,
   languages: PropTypes.array,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default injectIntl(Header);
