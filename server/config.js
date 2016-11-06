@@ -15,7 +15,8 @@ const config = {
     apikey: process.env.GOOGLE_APIKEY
   },
   actualCachePeriod: process.env.ACTUAL_CACHE_PERIOD || 43200000,
-  forecastPeriod: process.env.FORECAST_PERIOD || 7
+  forecastPeriod: process.env.FORECAST_PERIOD || 7,
+  jwt_token: process.env.JWT_TOKEN || 'forecast',
 };
 
 export default config;
