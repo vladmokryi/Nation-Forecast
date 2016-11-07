@@ -5,11 +5,9 @@
 - https://paper.dropbox.com/doc/--82UKXoLCurjgPiQCGQmQg
 
 ## List providers API's (docs)
-- https://openweathermap.org/forecast16
-- http://apidev.accuweather.com/developers/locationsAPIguide#GeoLookup
-- https://www.wunderground.com/weather/api/d/docs?d=data/geolookup
-- http://www.apixu.com/doc/request.aspx
-- https://darksky.net/dev/docs/forecast
+- [OpenWeatherMap](https://openweathermap.org/forecast16)
+- [APIXU](http://www.apixu.com/doc/request.aspx)
+- [Dark Sky](https://darksky.net/dev/docs/forecast)
 
 ## Watch all process in port 8000
 ```bash

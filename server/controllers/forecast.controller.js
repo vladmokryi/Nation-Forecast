@@ -39,7 +39,10 @@ export function getForecasts(req, res, next) {
           },
           (callback) => {
             getOpenweathermap({lat: lat, lon: lon}, callback);
-          }
+          },
+          (callback) => {
+            getDarksky({lat: lat, lon: lon}, callback);
+          },
         ], (err, results) => {
           req.forecastsIds = _.map(_.remove(results, null), '_id');
           next();
@@ -68,6 +71,7 @@ export function calculate(req, res) {
     let list = [];
     let allRating = parseInt(req.rating);
     for (let i = 0; i < serverConfig.forecastPeriod; i++) {
+      //todo: check date
       let item = {
         date: new Date(req.forecasts[0].list[i].date),
         min: 0,
@@ -165,6 +169,46 @@ export function getApixu(data, callback) {
       };
       addForecast(forecast, callback);
     }).catch((err)=> {
+      callback(err)
+    });
+  }).catch((err)=> {
+    callback(err)
+  });
+}
+
+export function getDarksky(data, callback) {
+  Provider.findOne({name: 'darksky'}).then(provider => {
+    let apiKey = serverConfig.providers.darksky.apiKey;
+    let apiUrl = serverConfig.providers.darksky.apiUrl;
+    let url = apiUrl + apiKey + `/${data.lat},${data.lon}?exclude=currently,minutely,hourly,alerts,flags&units=si`;
+    console.log(url);
+    fetch(url).then(response => response.json()).then(response => {
+      let list = [];
+      _.forEach(response.daily.data, function (day, index) {
+        if (index < 7) {
+          list.push({
+            date: new Date(day.time * 1000),
+            min: parseFloat(day.temperatureMin),
+            max: parseFloat(day.temperatureMax),
+            avg: (parseFloat(day.temperatureMin) + parseFloat(day.temperatureMax)) / 2,
+            weather: day
+          });
+        }
+      });
+      let forecast = {
+        provider: provider._id,
+        city: {
+          timezone: response.timezone,
+          offset: response.offset,
+        },
+        location: {
+          coordinates: [response.longitude, response.latitude]
+        },
+        list,
+      };
+      addForecast(forecast, callback);
+    }).catch((err)=> {
+      console.log(err);
       callback(err)
     });
   }).catch((err)=> {

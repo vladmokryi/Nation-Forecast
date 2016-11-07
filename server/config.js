@@ -9,6 +9,10 @@ const config = {
     apixu: {
       apiUrl: process.env.APIXU_APIURL,
       apiKey: process.env.APIXU_APIKEY
+    },
+    darksky: {
+      apiUrl: process.env.DARKSKY_APIURL,
+      apiKey: process.env.DARKSKY_APIKEY,
     }
   },
   google: {
