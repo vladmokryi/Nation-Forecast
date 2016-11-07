@@ -14,11 +14,9 @@ import parallel from 'async/parallel';
 export function getForecasts(req, res, next) {
   if (req.query && req.query.lat && req.query.lon) {
     //check cache
-    let range = 10,
+    let range = serverConfig.cache.range,
       lat = parseFloat(req.query.lat),
       lon = parseFloat(req.query.lon);
-
-    var cacheDate = new Date(+new Date() - serverConfig.actualCachePeriod );
     Forecast.find({
       location: {
         '$geoWithin': {
@@ -27,10 +25,9 @@ export function getForecasts(req, res, next) {
             range / 6371
           ]
         }
-      },
-      createdAt: { $gte: cacheDate }
+      }
     }).distinct('_id').then(function (forecasts) {
-      if (forecasts && forecasts.length) {
+      if (forecasts && forecasts.length && forecasts.length === _.keys(serverConfig.providers).length) {
         //get cache
         req.forecastsIds = forecasts;
         next();

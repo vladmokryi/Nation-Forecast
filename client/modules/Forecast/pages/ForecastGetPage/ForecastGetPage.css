@@ -1,4 +1,11 @@
 .forecast-container {
   display: flex;
   margin-bottom: 0.5em;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 650px) {
+  .forecast-container {
+    flex-direction: column;
+  }
 }

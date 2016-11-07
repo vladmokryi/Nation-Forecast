@@ -11,6 +11,7 @@
   font-size: 90%;
   display: flex;
 }
+
 .provider .name {
   flex: 1;
   align-self: center;
@@ -40,15 +41,21 @@
 }
 
 .provider .weather {
-  padding: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   flex: 3;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   border-left: solid 5px #c9c9c9;
 }
+
 .provider .weather > div {
   align-self: center;
   flex: 1;
   text-align: center;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 .provider .weather > div .avg span {

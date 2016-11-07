@@ -51,3 +51,15 @@
   text-decoration: none;
 }
 
+@media screen and (max-width: 550px) {
+  .container .search-btn {
+    display: none;
+  }
+  .autocomplete-container .autocomplete-input {
+    border-right: solid 5px #c9c9c9;
+  }
+
+  .autocomplete-container .autocomplete-input:focus {
+    border-right: solid 5px #00AFF0;
+  }
+}

@@ -1,6 +1,5 @@
 .map-outer {
-  flex: 1;
-  height: 200px;
+  flex: 1 0;
   border: solid 5px #c9c9c9;
 }
 
@@ -8,4 +7,10 @@
   height: 100%;
 }
 
+@media screen and (max-width: 650px) {
+  .map-outer {
+    height: 200px;
+    margin-bottom: 0.5em;
+  }
+}
 

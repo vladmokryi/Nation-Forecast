@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
+import serverConfig from '../config';
 
 const forecastSchema = new Schema({
   provider: { type: Schema.Types.ObjectId, ref: 'Provider', required: true },
@@ -22,7 +23,6 @@ const forecastSchema = new Schema({
 });
 
 forecastSchema.index({ location : '2dsphere' });
-
-//todo: add TTL index
+forecastSchema.index({ createdAt: 1}, {expireAfterSeconds: serverConfig.cache.period});
 
 export default mongoose.model('Forecast', forecastSchema);

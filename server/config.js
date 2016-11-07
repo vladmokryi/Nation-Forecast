@@ -14,7 +14,10 @@ const config = {
   google: {
     apikey: process.env.GOOGLE_APIKEY
   },
-  actualCachePeriod: process.env.ACTUAL_CACHE_PERIOD || 43200000,
+  cache: {
+    period: process.env.CACHE_PERIOD || 43200,
+    range: process.env.CACHE_RANGE || 10
+  },
   forecastPeriod: process.env.FORECAST_PERIOD || 7,
   jwt_token: process.env.JWT_TOKEN || 'forecast',
 };
