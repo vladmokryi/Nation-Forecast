@@ -5,7 +5,7 @@ import {FormattedDate, FormattedMessage} from 'react-intl';
 export default function ForecastCurrent(props) {
   return (
     <div className={styles['forecast-current']}>
-      {props.forecast && props.forecast.list && props.forecast.list.length && props.forecast.list.map(day => {
+      {props.forecast.list.map(day => {
         let date = new Date(day.date);
         return (
           <div key={day.date} className={styles['day-container']}>

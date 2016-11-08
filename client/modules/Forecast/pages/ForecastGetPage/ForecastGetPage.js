@@ -68,12 +68,12 @@ class ForecastGetPage extends Component {
         <ForecastSearchInput onSubmit={this.handleFormSubmit.bind(this)}
                              address={this.state.address} onChange={this.onChangeInput.bind(this)}
                              onSelect={this.onSelectInput.bind(this)}/>
-        <div className={styles["forecast-container"]}>
-          {this.state.marker.position && <ForecastLocationMap marker={this.state.marker}/>}
-          {this.state.marker.position && <ForecastCurrent forecast={this.props.forecast}/>}
-        </div>
-        <ForecastProviders providers={this.props.providers} ratings={this.props.ratings}
-                           onClick={this.onClickSetRate.bind(this)} isLoggedIn={this.props.isLoggedIn}/>
+        {this.props.forecast.list && this.props.forecast.list.length && <div className={styles["forecast-container"]}>
+          <ForecastLocationMap marker={this.state.marker}/>
+          <ForecastCurrent forecast={this.props.forecast}/>
+        </div>}
+        {this.props.providers.length && <ForecastProviders providers={this.props.providers} ratings={this.props.ratings}
+                           onClick={this.onClickSetRate.bind(this)} isLoggedIn={this.props.isLoggedIn}/>}
       </div>
     );
   }

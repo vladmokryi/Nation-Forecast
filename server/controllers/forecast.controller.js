@@ -181,11 +181,10 @@ export function getDarksky(data, callback) {
     let apiKey = serverConfig.providers.darksky.apiKey;
     let apiUrl = serverConfig.providers.darksky.apiUrl;
     let url = apiUrl + apiKey + `/${data.lat},${data.lon}?exclude=currently,minutely,hourly,alerts,flags&units=si`;
-    console.log(url);
     fetch(url).then(response => response.json()).then(response => {
       let list = [];
       _.forEach(response.daily.data, function (day, index) {
-        if (index < 7) {
+        if (index < serverConfig.forecastPeriod) {
           list.push({
             date: new Date(day.time * 1000),
             min: parseFloat(day.temperatureMin),
