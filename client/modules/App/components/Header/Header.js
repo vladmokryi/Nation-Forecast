@@ -31,7 +31,7 @@ export class Header extends Component {
         //костыль
         let icon = '';
         if (lang == 'en') {
-          icon = '_england'
+          icon = 'GB'
         } else if (lang == 'uk') {
           icon = 'UA';
         } else {

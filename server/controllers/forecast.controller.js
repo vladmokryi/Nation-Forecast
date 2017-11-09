@@ -17,7 +17,7 @@ export function getForecasts(req, res, next) {
     let range = serverConfig.cache.range,
       lat = parseFloat(req.query.lat),
       lon = parseFloat(req.query.lon),
-      date = new Date(+new Date() - serverConfig.cache.period);
+      date = new Date(+new Date() - serverConfig.cache.period*1000);
     Forecast.find({
       location: {
         '$geoWithin': {
@@ -27,7 +27,7 @@ export function getForecasts(req, res, next) {
           ]
         }
       },
-      createdAt: {gte: date}
+      createdAt: {$gte: date}
     }).distinct('_id').then(function (forecasts) {
       if (forecasts && forecasts.length && forecasts.length === _.keys(serverConfig.providers).length) {
         //get cache
