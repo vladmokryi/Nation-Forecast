@@ -2,26 +2,29 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {fetchForecast, fetchProviders, setForecast} from '../../ForecastActions';
 import {getForecast, getProviders} from '../../ForecastReducer';
-import {getAllRatings} from '../../../User/UserReducer';
-import {setRating, getRatings} from '../../../User/UserActions';
+import {getAllRatings, getUser} from '../../../User/UserReducer';
+import {setRating, getRatings, fetchUser, addFavoriteLocation} from '../../../User/UserActions';
 import ForecastSearchInput from '../../components/ForecastSearchInput/ForecastSearchInput';
 import ForecastProviders from '../../components/ForecastProviders/ForecastProviders';
 import ForecastLocationMap from '../../components/ForecastLocationMap/ForecastLocationMap';
 import ForecastCurrent from '../../components/ForecastCurrent/ForecastCurrent';
+import FavoriteLocations from '../../../User/components/FavoriteLocations/FavoriteLocations';
 import {geocodeByAddress} from 'react-places-autocomplete'
 import styles from './ForecastGetPage.css';
 import {isLoggedIn} from '../../../../util/apiCaller';
+import _ from 'lodash';
 
 class ForecastGetPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: '', marker: {}
+      address: '', marker: {}, addressChanged: true
     };
   }
 
   onChangeInput = (address) => {
-    this.setState({address});
+    console.log('addressChanged');
+    this.setState({address, addressChanged: true});
   };
 
   onSelectInput = (address) => {
@@ -32,6 +35,7 @@ class ForecastGetPage extends Component {
     this.props.dispatch(fetchProviders());
     if (this.props.isLoggedIn) {
       this.props.dispatch(getRatings());
+      this.props.dispatch(fetchUser());
     }
   }
 
@@ -48,7 +52,7 @@ class ForecastGetPage extends Component {
         } else {
           let marker = this.state.marker;
           marker.position = {lat, lng};
-          this.setState({marker: marker});
+          this.setState({marker: marker, addressChanged: false});
           this.props.dispatch(setForecast({}));
           this.props.dispatch(fetchForecast({lat, lon: lng}));
         }
@@ -62,12 +66,46 @@ class ForecastGetPage extends Component {
     this.props.dispatch(setRating(id, this.handleFormSubmit.bind(this)));
   };
 
+  selectFavorite = (favorite) => {
+    let marker = this.state.marker;
+    marker.position = {lat: favorite.location.coordinates[1], lng: favorite.location.coordinates[0]};
+    this.setState({address: favorite.name, marker: marker, addressChanged: false});
+    this.props.dispatch(setForecast({}));
+    this.props.dispatch(fetchForecast({lat: marker.position.lat, lon: marker.position.lng}));
+  };
+
+  addFavorite = () => {
+    if (this.props.forecast) {
+      let favorite = {
+        name: this.props.forecast.city.name,
+        location: this.props.forecast.location
+      };
+      this.props.dispatch(addFavoriteLocation(favorite));
+    }
+  };
+
+  isFavorite = () => {
+    let self = this;
+    if (self.props.forecast && self.props.user && self.props.forecast.location && self.props.user.favoriteLocations) {
+      return _.findIndex(self.props.user.favoriteLocations, function (item) {
+        if (item.location) {
+          return item.location.coordinates[0] === self.props.forecast.location.coordinates[0] && item.location.coordinates[1] === self.props.forecast.location.coordinates[1];
+        } else {
+          return false;
+        }
+      }) !== -1;
+    } else {
+      return false;
+    }
+  };
+
   render() {
     return (
       <div>
         <ForecastSearchInput onSubmit={this.handleFormSubmit.bind(this)}
                              address={this.state.address} onChange={this.onChangeInput.bind(this)}
-                             onSelect={this.onSelectInput.bind(this)}/>
+                             onSelect={this.onSelectInput.bind(this)} addFavorite={this.addFavorite.bind(this)} showStar={this.props.isLoggedIn && this.props.forecast.location && !this.state.addressChanged} isFavorite={this.isFavorite()}/>
+        { this.props.user && <FavoriteLocations user={this.props.user} onClick={this.selectFavorite.bind(this)} />}
         {(this.props.forecast.list && !!this.props.forecast.list.length) && <div className={styles["forecast-container"]}>
           <ForecastLocationMap marker={this.state.marker}/>
           <ForecastCurrent forecast={this.props.forecast}/>
@@ -89,7 +127,8 @@ function mapStateToProps(store) {
     forecast: getForecast(store),
     providers: getProviders(store),
     ratings: getAllRatings(store),
-    isLoggedIn: isLoggedIn()
+    isLoggedIn: isLoggedIn(),
+    user: getUser(store)
   };
 }
 

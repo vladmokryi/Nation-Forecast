@@ -23,7 +23,7 @@ module.exports = {
   output: {
     path: __dirname,
     filename: 'app.js',
-    publicPath: 'http://0.0.0.0:8000/',
+    publicPath: 'http://localhost:8000/',
   },
 
   resolve: {
@@ -59,7 +59,9 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: false
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,

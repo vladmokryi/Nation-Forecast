@@ -1,0 +1,13 @@
+.favorite-container {
+  margin-left: 5px;
+  margin-right: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.favorite-container a {
+  color: grey;
+  cursor: pointer;
+  margin-right: 20px;
+}

@@ -12,6 +12,7 @@ module.exports = {
     publicPath: '/',
     libraryTarget: 'commonjs2',
   },
+  devServer: { headers: { 'Access-Control-Allow-Origin': 'http://localhost:8000' } },
   resolve: {
     extensions: ['', '.js', '.jsx'],
     modules: [

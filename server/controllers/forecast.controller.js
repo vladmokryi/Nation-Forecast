@@ -87,7 +87,15 @@ export function calculate(req, res) {
       item.avg = (item.min + item.max) / 2;
       list.push(item);
     }
-    res.status(200).send({forecast: {date: new Date(), list}, providers: req.forecasts});
+    res.status(200).send({
+      forecast: {
+        city: req.forecasts[0].city,
+        location: req.forecasts[0].location,
+        date: new Date(),
+        list
+      },
+      providers: req.forecasts
+    });
   } else {
     res.status(500).end();
   }

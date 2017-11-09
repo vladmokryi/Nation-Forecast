@@ -3,6 +3,19 @@ import cuid from 'cuid';
 import serverConfig from '../config';
 import jwt from 'jwt-simple';
 import { generateRandomToken, sha512 } from '../util/security';
+import _ from 'lodash';
+
+export function get(req, res) {
+  if (req.user) {
+    res.json({ user: {
+      cuid: req.user.cuid,
+      email: req.user.email,
+      favoriteLocations: req.user.favoriteLocations
+    }});
+  } else {
+    res.status(403).end();
+  }
+}
 
 export function create(req, res) {
   if (!req.body.user.email || !req.body.user.password) {
@@ -30,5 +43,37 @@ export function create(req, res) {
       .catch(err => {
         res.status(500).send(err);
       });
+  }
+}
+
+export function addFavoriteLocation(req, res) {
+  if (req.user) {
+    if (req.body.favorite) {
+      let favorite = {
+        name: req.body.favorite.name,
+        location: req.body.favorite.location
+      };
+      let index = _.findIndex(req.user.favoriteLocations, function (item) {
+        if (item.location) {
+          return item.location.coordinates[0] === favorite.location.coordinates[0] && item.location.coordinates[1] === favorite.location.coordinates[1];
+        } else {
+          return false;
+        }
+      });
+      if (index !== -1) {
+        req.user.favoriteLocations.splice(index, 1);
+      } else {
+        req.user.favoriteLocations.push(favorite);
+      }
+      req.user.save().then(()=> {
+        res.status(200).send({});
+      }).catch((err) => {
+        res.status(400).send(err);
+      })
+    } else {
+      res.status(400).end();
+    }
+  } else {
+    res.status(403).end();
   }
 }

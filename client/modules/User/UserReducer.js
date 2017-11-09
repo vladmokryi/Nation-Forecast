@@ -1,9 +1,14 @@
-import {SET_RATINGS, UPDATE_RATING} from './UserActions';
+import {SET_RATINGS, UPDATE_RATING, SET_USER} from './UserActions';
 // Initial State
 const initialState = { ratings: {} };
 
 const UserReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_USER:
+      return {
+        ...state,
+        user: action.user,
+      };
     case SET_RATINGS:
       return {
         ...state,
@@ -24,6 +29,11 @@ const UserReducer = (state = initialState, action) => {
 // Get products
 export const getAllRatings = (state) => {
   return state.users.ratings;
+};
+
+// Get User
+export const getUser = (state) => {
+  return state.users.user;
 };
 
 // Export Reducer
