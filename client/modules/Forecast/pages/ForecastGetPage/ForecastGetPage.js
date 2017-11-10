@@ -13,18 +13,23 @@ import {geocodeByAddress} from 'react-places-autocomplete'
 import styles from './ForecastGetPage.css';
 import {isLoggedIn} from '../../../../util/apiCaller';
 import _ from 'lodash';
+import {FormattedDate, FormattedMessage, intlShape, injectIntl} from 'react-intl'
 
 class ForecastGetPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: '', marker: {}, addressChanged: true
+      address: '', marker: {}, addressChanged: true, forecastPeriod: 7
     };
   }
 
   onChangeInput = (address) => {
     console.log('addressChanged');
     this.setState({address, addressChanged: true});
+  };
+
+  onChangePeriod = (period) => {
+    this.setState({forecastPeriod: period});
   };
 
   onSelectInput = (address) => {
@@ -54,7 +59,7 @@ class ForecastGetPage extends Component {
           marker.position = {lat, lng};
           this.setState({marker: marker, addressChanged: false});
           this.props.dispatch(setForecast({}));
-          this.props.dispatch(fetchForecast({lat, lon: lng}));
+          this.props.dispatch(fetchForecast({lat, lon: lng, forecastPeriod: this.state.forecastPeriod}));
         }
       });
     } else {
@@ -106,11 +111,17 @@ class ForecastGetPage extends Component {
                              address={this.state.address} onChange={this.onChangeInput.bind(this)}
                              onSelect={this.onSelectInput.bind(this)} addFavorite={this.addFavorite.bind(this)} showStar={this.props.isLoggedIn && this.props.forecast.location && !this.state.addressChanged} isFavorite={this.isFavorite()}/>
         { this.props.user && <FavoriteLocations user={this.props.user} onClick={this.selectFavorite.bind(this)} />}
+        <div className={styles["forecast-period"]}>
+          <a className={this.state.forecastPeriod === 1 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(1); }.bind(this)}>1</a>
+          <a className={this.state.forecastPeriod === 3 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(3); }.bind(this)}>3</a>
+          <a className={this.state.forecastPeriod === 5 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(5); }.bind(this)}>5</a>
+          <a className={this.state.forecastPeriod === 7 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(7); }.bind(this)}>7</a>
+        </div>
         {(this.props.forecast.list && !!this.props.forecast.list.length) && <div className={styles["forecast-container"]}>
           <ForecastLocationMap marker={this.state.marker}/>
-          <ForecastCurrent forecast={this.props.forecast}/>
+          <ForecastCurrent intl={this.props.intl} forecast={this.props.forecast}/>
         </div>}
-        {!!this.props.providers.length && <ForecastProviders providers={this.props.providers} ratings={this.props.ratings}
+        {!!this.props.providers.length && <ForecastProviders intl={this.props.intl} providers={this.props.providers} ratings={this.props.ratings}
                            onClick={this.onClickSetRate.bind(this)} isLoggedIn={this.props.isLoggedIn}/>}
       </div>
     );
@@ -119,6 +130,8 @@ class ForecastGetPage extends Component {
 
 ForecastGetPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  intlObj: PropTypes.object.isRequired,
+  intl: intlShape.isRequired
 };
 
 // Retrieve data from store as props
@@ -128,9 +141,10 @@ function mapStateToProps(store) {
     providers: getProviders(store),
     ratings: getAllRatings(store),
     isLoggedIn: isLoggedIn(),
-    user: getUser(store)
+    user: getUser(store),
+    intlObj: store.intl
   };
 }
 
-export default connect(mapStateToProps)(ForecastGetPage);
+export default injectIntl(connect(mapStateToProps)(ForecastGetPage));
 

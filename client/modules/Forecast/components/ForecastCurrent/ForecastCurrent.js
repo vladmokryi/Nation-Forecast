@@ -1,8 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import styles from './ForecastCurrent.css';
-import {FormattedDate, FormattedMessage} from 'react-intl';
+import {FormattedDate, FormattedMessage} from 'react-intl'
+import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
 export default function ForecastCurrent(props) {
+  let formatDate = (date) => {
+    return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'});
+  };
+  let chartData = [];
+  props.forecast.list.forEach(function (item) {
+    chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.min.toFixed(2))});
+    chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.avg.toFixed(2))});
+    chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.max.toFixed(2))});
+  });
   return (
     <div className={styles['forecast-current']}>
       {props.forecast.list.map(day => {
@@ -34,6 +44,15 @@ export default function ForecastCurrent(props) {
           </div>
         );
       })}
+      <div className={styles['forecast-current-graph']}>
+      <ResponsiveContainer>
+        <AreaChart data={chartData} stackOffset="silhouette">
+          <Tooltip/>
+          <Area type='monotone' dataKey='value' stroke='#8884d8' name={props.intl.formatMessage({id: "temperature_chart"})}  fill='#8884d8' />
+          <XAxis dataKey="name" hide={true}/>
+        </AreaChart>
+      </ResponsiveContainer>
+      </div>
     </div>
   )
 }

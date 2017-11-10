@@ -45,13 +45,19 @@
   padding-left: 0.5em;
   padding-right: 0.5em;
   flex: 3;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   border-left: solid 5px #c9c9c9;
 }
 
 .provider .weather > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.provider .weather div.weather-graph {
+  width: 100%;
+  height: 30px;
+}
+.provider .weather div.weather-day {
   align-self: center;
   flex: 1;
   text-align: center;
@@ -59,7 +65,7 @@
   padding-bottom: 0.5em;
 }
 
-.provider .weather > div .avg span {
+.provider .weather div.weather-day .avg span {
   display: block;
   color: #9d9d9d;
   font-size: 80%

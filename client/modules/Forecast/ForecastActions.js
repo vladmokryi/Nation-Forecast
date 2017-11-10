@@ -28,7 +28,7 @@ export function updateProviders(providers) {
 
 export function fetchForecast(data) {
   return (dispatch) => {
-    return callApi(`forecast?lat=${data.lat}&lon=${data.lon}`).then(res => {
+    return callApi(`forecast?lat=${data.lat}&lon=${data.lon}&period=${data.forecastPeriod}`).then(res => {
       dispatch(setForecast(res.forecast));
       dispatch(updateProviders(res.providers));
     }).catch(err=> console.log(err));

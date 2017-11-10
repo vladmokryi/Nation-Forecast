@@ -15,5 +15,6 @@ export default {
     password_input_placeholder: "Enter password",
     or_text: "or",
     password_repeat_input_placeholder: "Repeat password",
+    temperature_chart: "Value",
   },
 };

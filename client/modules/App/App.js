@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
+import {injectIntl, intlShape, FormattedRelative} from 'react-intl';
 
 // Import Style
 import styles from './App.css';
@@ -44,7 +45,7 @@ export class App extends Component {
           <div className={styles.wrapper}>
             <Header
               switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
-              languages={this.props.intl.enabledLanguages}
+              languages={this.props.intlObj.enabledLanguages}
               dispatch={this.props.dispatch}
               isLoggedIn={this.props.isLoggedIn}
             />
@@ -61,15 +62,16 @@ export class App extends Component {
 App.propTypes = {
   children: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
-  intl: PropTypes.object.isRequired,
+  intl: intlShape.isRequired,
+  intlObj: PropTypes.object.isRequired
 };
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
   return {
-    intl: store.intl,
+    intlObj: store.intl,
     isLoggedIn: isLoggedIn()
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default injectIntl(connect(mapStateToProps)(App));

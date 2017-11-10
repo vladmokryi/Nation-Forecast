@@ -15,5 +15,6 @@ export default {
     password_input_placeholder: "Введіть пароль",
     or_text: "або",
     password_repeat_input_placeholder: "Повторіть пароль",
+    temperature_chart: "Показник",
   },
 };

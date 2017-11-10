@@ -6,6 +6,11 @@
   flex-wrap: wrap;
 }
 
+.forecast-current-graph {
+  height: 140px;
+  width: 100%;
+}
+
 @media screen and (max-width: 650px) {
   .forecast-current {
     margin-left: 0;
