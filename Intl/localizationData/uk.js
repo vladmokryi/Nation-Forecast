@@ -15,10 +15,10 @@ export default {
     password_input_placeholder: "Введіть пароль",
     or_text: "або",
     password_repeat_input_placeholder: "Повторіть пароль",
-    temperature_chart: "Показник",
-    period_1: "Сьогодні",
+    temperature_chart: "температура",
+    period_1: "сьогодні",
     period_3: "3 дні",
     period_5: "5 днів",
-    period_7: "Тиждень",
+    period_7: "тиждень",
   },
 };

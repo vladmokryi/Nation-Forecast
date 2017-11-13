@@ -7,6 +7,7 @@
 .forecast-period {
   display: flex;
   margin-top: 0.5em;
+  flex-wrap: wrap;
 }
 
 .forecast-period > a:hover {
@@ -18,8 +19,8 @@
   text-align: center;
   cursor: pointer;
   border: solid 5px #c9c9c9;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 5px 10px;
+  white-space: nowrap;
 }
 
 .spinner-container {

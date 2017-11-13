@@ -112,20 +112,6 @@ class ForecastGetPage extends Component {
   render() {
     return (
       <div>
-        {/*<div className={styles["spinner-container"]}>*/}
-        {/*<Spinner*/}
-          {/*color={'#123abc'}*/}
-          {/*loading={true}*/}
-        {/*/>*/}
-        {/*</div>*/}
-        {/*<Loading*/}
-          {/*isLoading={true}*/}
-          {/*loadingClassName='loading'*/}
-          {/*spinner={"<div>Custom spinner...</div>"}>*/}
-
-          {/*Test*/}
-
-        {/*</Loading>*/}
         <ForecastSearchInput onSubmit={this.handleFormSubmit.bind(this)}
                              address={this.state.address} onChange={this.onChangeInput.bind(this)}
                              onSelect={this.onSelectInput.bind(this)} addFavorite={this.addFavorite.bind(this)} showStar={this.props.isLoggedIn && this.props.forecast.location && !this.state.addressChanged} isFavorite={this.isFavorite()}/>
@@ -140,7 +126,7 @@ class ForecastGetPage extends Component {
           <ForecastLocationMap marker={this.state.marker}/>
           <ForecastCurrent intl={this.props.intl} forecast={this.props.forecast}/>
         </div>}
-        {!!this.props.providers.length && <ForecastProviders intl={this.props.intl} providers={this.props.providers} ratings={this.props.ratings}
+        {!!this.props.providers.length && <ForecastProviders intl={this.props.intl} providers={this.props.providers} forecast={this.props.forecast} ratings={this.props.ratings}
                            onClick={this.onClickSetRate.bind(this)} isLoggedIn={this.props.isLoggedIn}/>}
       </div>
     );

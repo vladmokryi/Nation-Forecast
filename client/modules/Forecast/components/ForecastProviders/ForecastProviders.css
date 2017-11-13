@@ -52,6 +52,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 5px;
 }
 .provider .weather div.weather-graph {
   width: 100%;
@@ -63,6 +64,11 @@
   text-align: center;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+  border-right: 1px solid #c9c9c9;
+}
+
+.provider .weather div.weather-day:last-child {
+  border-right: none;
 }
 
 .provider .weather div.weather-day .avg span {

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {injectIntl, FormattedMessage, FormattedDate} from 'react-intl';
 import styles from  './ForecastProviders.css';
 import {isLoggedIn} from '../../../../util/apiCaller';
-import {FaThumbsODown, FaThumbsOUp} from 'react-icons/lib/fa';
+import {FaThumbsODown, FaThumbsOUp, FaArrowUp, FaArrowDown} from 'react-icons/lib/fa';
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 function ForecastProviders(props) {
@@ -18,6 +18,10 @@ function ForecastProviders(props) {
     });
     return chartData;
   };
+  let arrow = (avg, index) => {
+    return avg > props.forecast.list[index].avg ? <FaArrowUp color="#00C851"/> : <FaArrowDown color="#ff4444"/>;
+  };
+
   return (
     <div className={styles.container}>
       {props.providers.map(item => {
@@ -42,13 +46,13 @@ function ForecastProviders(props) {
               {item.list &&
               <div>
                 {
-                  item.list.map(day => {
+                  item.list.map((day, index) => {
                     return (
                       <div key={day.date} className={styles["weather-day"]}>
                         <p><FormattedDate day="2-digit" month="2-digit" value={new Date(day.date)}/></p>
                         <div className={styles.avg}>
                           <FormattedMessage id="avg_title"/>
-                          <div>{day.avg.toFixed(2)}&deg;</div>
+                          <div>{day.avg.toFixed(2)}&deg; {arrow(day.avg, index)}</div>
                         </div>
                       </div>
                     )
