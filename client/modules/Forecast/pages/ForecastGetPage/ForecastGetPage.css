@@ -18,7 +18,14 @@
   text-align: center;
   cursor: pointer;
   border: solid 5px #c9c9c9;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.spinner-container {
+  text-align: center;
+  height: auto;
+  width: 100%;
 }
 
 .forecast-period > a.forecast-period-active {

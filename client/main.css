@@ -29,9 +29,28 @@ input:-moz-placeholder {
 	font-weight: 300;
 }
 
+body, html {
+  height: 100%;
+}
+
 body {
-  background: #f8f8f8;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1)), url("/img/bg.png");
+  background-color: #f8f8f8;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
   font-weight: 400;
 }
+
+/*body:before {*/
+  /*position: absolute;*/
+  /*content:" ";*/
+  /*top:0;*/
+  /*left:0;*/
+  /*right: 0;*/
+  /*bottom: 0;*/
+  /*z-index:0;*/
+  /*background-color: rgba(255,0,0,0.5);*/
+/*}*/

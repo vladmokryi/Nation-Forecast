@@ -14,6 +14,8 @@ import styles from './ForecastGetPage.css';
 import {isLoggedIn} from '../../../../util/apiCaller';
 import _ from 'lodash';
 import {FormattedDate, FormattedMessage, intlShape, injectIntl} from 'react-intl'
+import { BarLoader as Spinner } from 'react-spinners';
+import Loading from 'react-loading-spinner';
 
 class ForecastGetPage extends Component {
   constructor(props) {
@@ -24,12 +26,15 @@ class ForecastGetPage extends Component {
   }
 
   onChangeInput = (address) => {
-    console.log('addressChanged');
     this.setState({address, addressChanged: true});
   };
 
   onChangePeriod = (period) => {
     this.setState({forecastPeriod: period});
+    if (this.props.forecast && this.props.forecast.location) {
+      this.props.dispatch(setForecast({}));
+      this.props.dispatch(fetchForecast({lat: this.props.forecast.location.coordinates[1], lon: this.props.forecast.location.coordinates[0], period: period}));
+    }
   };
 
   onSelectInput = (address) => {
@@ -59,7 +64,7 @@ class ForecastGetPage extends Component {
           marker.position = {lat, lng};
           this.setState({marker: marker, addressChanged: false});
           this.props.dispatch(setForecast({}));
-          this.props.dispatch(fetchForecast({lat, lon: lng, forecastPeriod: this.state.forecastPeriod}));
+          this.props.dispatch(fetchForecast({lat, lon: lng, period: this.state.forecastPeriod}));
         }
       });
     } else {
@@ -76,7 +81,7 @@ class ForecastGetPage extends Component {
     marker.position = {lat: favorite.location.coordinates[1], lng: favorite.location.coordinates[0]};
     this.setState({address: favorite.name, marker: marker, addressChanged: false});
     this.props.dispatch(setForecast({}));
-    this.props.dispatch(fetchForecast({lat: marker.position.lat, lon: marker.position.lng}));
+    this.props.dispatch(fetchForecast({lat: marker.position.lat, lon: marker.position.lng, period: this.state.forecastPeriod}));
   };
 
   addFavorite = () => {
@@ -107,15 +112,29 @@ class ForecastGetPage extends Component {
   render() {
     return (
       <div>
+        {/*<div className={styles["spinner-container"]}>*/}
+        {/*<Spinner*/}
+          {/*color={'#123abc'}*/}
+          {/*loading={true}*/}
+        {/*/>*/}
+        {/*</div>*/}
+        {/*<Loading*/}
+          {/*isLoading={true}*/}
+          {/*loadingClassName='loading'*/}
+          {/*spinner={"<div>Custom spinner...</div>"}>*/}
+
+          {/*Test*/}
+
+        {/*</Loading>*/}
         <ForecastSearchInput onSubmit={this.handleFormSubmit.bind(this)}
                              address={this.state.address} onChange={this.onChangeInput.bind(this)}
                              onSelect={this.onSelectInput.bind(this)} addFavorite={this.addFavorite.bind(this)} showStar={this.props.isLoggedIn && this.props.forecast.location && !this.state.addressChanged} isFavorite={this.isFavorite()}/>
         { this.props.user && <FavoriteLocations user={this.props.user} onClick={this.selectFavorite.bind(this)} />}
         <div className={styles["forecast-period"]}>
-          <a className={this.state.forecastPeriod === 1 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(1); }.bind(this)}>1</a>
-          <a className={this.state.forecastPeriod === 3 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(3); }.bind(this)}>3</a>
-          <a className={this.state.forecastPeriod === 5 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(5); }.bind(this)}>5</a>
-          <a className={this.state.forecastPeriod === 7 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(7); }.bind(this)}>7</a>
+          <a className={this.state.forecastPeriod === 1 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(1); }.bind(this)}><FormattedMessage id="period_1"/></a>
+          <a className={this.state.forecastPeriod === 3 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(3); }.bind(this)}><FormattedMessage id="period_3"/></a>
+          <a className={this.state.forecastPeriod === 5 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(5); }.bind(this)}><FormattedMessage id="period_5"/></a>
+          <a className={this.state.forecastPeriod === 7 ? styles["forecast-period-active"] : ""} onClick={function() { this.onChangePeriod(7); }.bind(this)}><FormattedMessage id="period_7"/></a>
         </div>
         {(this.props.forecast.list && !!this.props.forecast.list.length) && <div className={styles["forecast-container"]}>
           <ForecastLocationMap marker={this.state.marker}/>

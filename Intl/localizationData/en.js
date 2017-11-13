@@ -16,5 +16,9 @@ export default {
     or_text: "or",
     password_repeat_input_placeholder: "Repeat password",
     temperature_chart: "Value",
+    period_1: "Today",
+    period_3: "3 days",
+    period_5: "5 days",
+    period_7: "Week",
   },
 };

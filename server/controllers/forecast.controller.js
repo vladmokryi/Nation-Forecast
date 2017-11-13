@@ -13,6 +13,8 @@ import parallel from 'async/parallel';
  */
 export function getForecasts(req, res, next) {
   if (req.query && req.query.lat && req.query.lon) {
+    let forecastPeriod = req.query.period ? parseInt(req.query.period) : serverConfig.forecastPeriod;
+
     //check cache
     let range = serverConfig.cache.range,
       lat = parseFloat(req.query.lat),
@@ -29,7 +31,7 @@ export function getForecasts(req, res, next) {
       },
       createdAt: {$gte: date}
     }).distinct('_id').then(function (forecasts) {
-      if (forecasts && forecasts.length && forecasts.length === _.keys(serverConfig.providers).length) {
+      if (forecasts && forecasts.length && forecasts.length === _.keys(serverConfig.providers).length && forecasts[0] && forecasts[0].list && forecasts[0].list.length >= forecastPeriod) {
         //get cache
         req.forecastsIds = forecasts;
         next();
@@ -37,20 +39,20 @@ export function getForecasts(req, res, next) {
         //new request
         parallel([
           (callback) => {
-            getApixu({lat: lat, lon: lon}, callback);
+            getApixu({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
           },
           (callback) => {
-            getOpenweathermap({lat: lat, lon: lon}, callback);
+            getOpenweathermap({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
           },
           (callback) => {
-            getDarksky({lat: lat, lon: lon}, callback);
+            getDarksky({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
           },
         ], (err, results) => {
           req.forecastsIds = _.map(_.remove(results, null), '_id');
           next();
         });
       }
-    }).catch(function () {
+    }).catch(function (err) {
       res.status(500).end();
     });
   } else {
@@ -72,7 +74,8 @@ export function calculate(req, res) {
   if (req.forecasts && req.forecasts.length && req.rating) {
     let list = [];
     let allRating = parseInt(req.rating);
-    for (let i = 0; i < serverConfig.forecastPeriod; i++) {
+    let forecastPeriod = req.query.period ? parseInt(req.query.period) : serverConfig.forecastPeriod;
+    for (let i = 0; i < forecastPeriod; i++) {
       //todo: check date
       let item = {
         date: new Date(req.forecasts[0].list[i].date),
@@ -120,7 +123,7 @@ function addForecast(data, callback) {
 
 export function getOpenweathermap(data, callback) {
   Provider.findOne({name: 'openweathermap'}).then(provider => {
-    let days = serverConfig.forecastPeriod;
+    let days = data.forecastPeriod ? parseInt(data.forecastPeriod) : serverConfig.forecastPeriod;
     let apiKey = serverConfig.providers.openweathermap.apiKey;
     let apiUrl = serverConfig.providers.openweathermap.apiUrl;
     let url = apiUrl + `?lat=${data.lat}&lon=${data.lon}&cnt=${days}&mode=json&units=metric&appid=${apiKey}`;
@@ -154,7 +157,7 @@ export function getOpenweathermap(data, callback) {
 
 export function getApixu(data, callback) {
   Provider.findOne({name: 'apixu'}).then(provider => {
-    let days = serverConfig.forecastPeriod;
+    let days = data.forecastPeriod ? parseInt(data.forecastPeriod) : serverConfig.forecastPeriod;
     let apiKey = serverConfig.providers.apixu.apiKey;
     let apiUrl = serverConfig.providers.apixu.apiUrl;
     let url = apiUrl + `?q=${data.lat},${data.lon}&key=${apiKey}&days=${days}`;
@@ -188,13 +191,14 @@ export function getApixu(data, callback) {
 
 export function getDarksky(data, callback) {
   Provider.findOne({name: 'darksky'}).then(provider => {
+    let forecastPeriod = data.forecastPeriod ? parseInt(data.forecastPeriod) : serverConfig.forecastPeriod;
     let apiKey = serverConfig.providers.darksky.apiKey;
     let apiUrl = serverConfig.providers.darksky.apiUrl;
     let url = apiUrl + apiKey + `/${data.lat},${data.lon}?exclude=currently,minutely,hourly,alerts,flags&units=si`;
     fetch(url).then(response => response.json()).then(response => {
       let list = [];
       _.forEach(response.daily.data, function (day, index) {
-        if (index < serverConfig.forecastPeriod) {
+        if (index < forecastPeriod) {
           list.push({
             date: new Date(day.time * 1000),
             min: parseFloat(day.temperatureMin),
