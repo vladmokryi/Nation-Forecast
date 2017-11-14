@@ -81,3 +81,24 @@
   cursor: pointer;
   align-self: center;
 }
+
+.text-success-light {
+ color: #00C851;
+}
+
+.text-danger-light {
+  color: #ff4444;
+}
+
+.text-warning-light {
+  color: #ffbb33;
+}
+
+@media screen and (max-width: 650px) {
+  .provider {
+    flex-direction: column;
+  }
+  .provider .weather {
+    border-left: none;
+  }
+}

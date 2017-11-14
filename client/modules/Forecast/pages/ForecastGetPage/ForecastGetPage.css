@@ -30,7 +30,8 @@
 }
 
 .forecast-period > a.forecast-period-active {
-  background: #c9c9c9;
+  background: #00AFF0;
+  color: #f8f8f8;
 }
 
 @media screen and (max-width: 650px) {

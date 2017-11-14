@@ -4,14 +4,15 @@ import {FormattedDate, FormattedMessage} from 'react-intl'
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
 export default function ForecastCurrent(props) {
-  let formatDate = (date) => {
-    return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'});
+  let formatDate = (date, message) => {
+    return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'})
+      + ' ' + props.intl.formatMessage({id: message});
   };
   let chartData = [];
   props.forecast.list.forEach(function (item) {
-    chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.min.toFixed(2))});
-    chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.avg.toFixed(2))});
-    chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.max.toFixed(2))});
+    chartData.push({name: formatDate(new Date(item.date), 'min_title'), value: parseFloat(item.min.toFixed(2))});
+    chartData.push({name: formatDate(new Date(item.date), 'avg_title'), value: parseFloat(item.avg.toFixed(2))});
+    chartData.push({name: formatDate(new Date(item.date), 'max_title'), value: parseFloat(item.max.toFixed(2))});
   });
   return (
     <div className={styles['forecast-current']}>

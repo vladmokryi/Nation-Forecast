@@ -51,7 +51,14 @@ export class Header extends Component {
     return (
       <div className={styles.header}>
         <div className={styles['logo']}>
-          <a href="/"><FormattedMessage id="project_name_long"/></a>
+          <a href="/">
+            <span className={styles['full-project-name']}>
+              <FormattedMessage id="project_name_long"/>
+            </span>
+            <span className={styles['short-project-name']}>
+              <FormattedMessage id="project_name_short"/>
+            </span>
+          </a>
         </div>
         <div className={styles['language-switcher']}>
           <ul>

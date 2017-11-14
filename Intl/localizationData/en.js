@@ -1,6 +1,7 @@
 export default {
   locale: 'en',
   messages: {
+    project_name_short: "NF",
     project_name_long: "National Forecast",
     search_placeholder: "The name of the village, the country or region...",
     min_title: "min.",

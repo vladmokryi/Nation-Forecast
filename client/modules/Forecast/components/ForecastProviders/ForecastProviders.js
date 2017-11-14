@@ -6,20 +6,28 @@ import {FaThumbsODown, FaThumbsOUp, FaArrowUp, FaArrowDown} from 'react-icons/li
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 function ForecastProviders(props) {
-  let formatDate = (date) => {
-    return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'});
+  let formatDate = (date, message) => {
+    return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'})
+      + ' ' + props.intl.formatMessage({id: message});
   };
   let getChartData = (list) => {
     let chartData = [];
     list.forEach(function (item) {
-      chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.min.toFixed(2))});
-      chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.avg.toFixed(2))});
-      chartData.push({name: formatDate(new Date(item.date)), value: parseFloat(item.max.toFixed(2))});
+      chartData.push({name: formatDate(new Date(item.date), 'min_title'), value: parseFloat(item.min.toFixed(2))});
+      chartData.push({name: formatDate(new Date(item.date), 'avg_title'), value: parseFloat(item.avg.toFixed(2))});
+      chartData.push({name: formatDate(new Date(item.date), 'max_title'), value: parseFloat(item.max.toFixed(2))});
     });
     return chartData;
   };
-  let arrow = (avg, index) => {
-    return avg > props.forecast.list[index].avg ? <FaArrowUp color="#00C851"/> : <FaArrowDown color="#ff4444"/>;
+  let hightLightClass = (avg, index) => {
+    let diff = avg - props.forecast.list[index].avg;
+    if (diff >= 1) {
+      return styles["text-success-light"];
+    } else if (diff <= -1) {
+      return styles["text-danger-light"];
+    } else {
+      return '';
+    }
   };
 
   return (
@@ -52,7 +60,7 @@ function ForecastProviders(props) {
                         <p><FormattedDate day="2-digit" month="2-digit" value={new Date(day.date)}/></p>
                         <div className={styles.avg}>
                           <FormattedMessage id="avg_title"/>
-                          <div>{day.avg.toFixed(2)}&deg; {arrow(day.avg, index)}</div>
+                          <div className={hightLightClass(day.avg, index)}>{day.avg.toFixed(2)}&deg;</div>
                         </div>
                       </div>
                     )
