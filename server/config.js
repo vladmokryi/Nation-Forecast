@@ -13,6 +13,11 @@ const config = {
     darksky: {
       apiUrl: process.env.DARKSKY_APIURL,
       apiKey: process.env.DARKSKY_APIKEY,
+    },
+    weatherunlocked: {
+      apiKey: process.env.WEATHERUNLOCKED_APIKEY,
+      appID: process.env.WEATHERUNLOCKED_APPID,
+      apiUrl: process.env.WEATHERUNLOCKED_APIURL
     }
   },
   google: {
