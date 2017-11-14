@@ -4,6 +4,7 @@ import serverConfig from '../config';
 import fetch from 'node-fetch';
 import _ from 'lodash';
 import parallel from 'async/parallel';
+let parseString = require('xml2js').parseString;
 
 /**
  * Get forecast by coordinates
@@ -46,6 +47,9 @@ export function getForecasts(req, res, next) {
           },
           (callback) => {
             getDarksky({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
+          },
+          (callback) => {
+            getWeatherunlocked({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
           },
         ], (err, results) => {
           req.forecastsIds = _.map(_.remove(results, null), '_id');
@@ -223,6 +227,45 @@ export function getDarksky(data, callback) {
         },
         location: {
           coordinates: [response.longitude, response.latitude]
+        },
+        list,
+      };
+      addForecast(forecast, callback);
+    }).catch((err)=> {
+      console.log(err);
+      callback(err)
+    });
+  }).catch((err)=> {
+    callback(err)
+  });
+}
+
+export function getWeatherunlocked(data, callback) {
+  Provider.findOne({name: 'weatherunlocked'}).then(provider => {
+    let forecastPeriod = data.forecastPeriod ? parseInt(data.forecastPeriod) : serverConfig.forecastPeriod;
+    let apiKey = serverConfig.providers.weatherunlocked.apiKey;
+    let apiUrl = serverConfig.providers.weatherunlocked.apiUrl;
+    let appId = serverConfig.providers.weatherunlocked.appID;
+
+    let url = apiUrl + `${data.lat},${data.lon}?app_id=${appId}&app_key=${apiKey}`;
+    fetch(url).then(response => response.json()).then(response => {
+      let list = [];
+      _.forEach(response.Days, function (day, index) {
+        if (index < forecastPeriod) {
+          let date = day.date.split('/');
+          list.push({
+            date: new Date(date[1] + '/' + date[0] + '/' + date[2]),
+            min: parseFloat(day.temp_min_c),
+            max: parseFloat(day.temp_max_c),
+            avg: (parseFloat(day.temp_min_c) + parseFloat(day.temp_max_c)) / 2,
+            weather: day
+          });
+        }
+      });
+      let forecast = {
+        provider: provider._id,
+        location: {
+          coordinates: [data.lon, data.lat]
         },
         list,
       };
