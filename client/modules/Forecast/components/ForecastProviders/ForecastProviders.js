@@ -20,11 +20,15 @@ function ForecastProviders(props) {
     return chartData;
   };
   let hightLightClass = (avg, index) => {
-    let diff = avg - props.forecast.list[index].avg;
-    if (diff >= 1) {
-      return styles["text-success-light"];
-    } else if (diff <= -1) {
-      return styles["text-danger-light"];
+    if (props.forecast.list && props.forecast.list[index]) {
+      let diff = avg - props.forecast.list[index].avg;
+      if (diff >= 1) {
+        return styles["text-success-light"];
+      } else if (diff <= -1) {
+        return styles["text-danger-light"];
+      } else {
+        return '';
+      }
     } else {
       return '';
     }

@@ -92,10 +92,17 @@ export function calculate(req, res) {
       item.avg = (item.min + item.max) / 2;
       list.push(item);
     }
+
+    //find info
+    //openweathermap
+    let openweathermap =  _.find(req.forecasts, function (item) {
+      return item.provider.name === 'openweathermap';
+    });
+
     res.status(200).send({
       forecast: {
-        city: req.forecasts[0].city,
-        location: req.forecasts[0].location,
+        city: openweathermap.city,
+        location: openweathermap.location,
         date: new Date(),
         list
       },

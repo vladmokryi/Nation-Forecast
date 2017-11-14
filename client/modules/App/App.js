@@ -29,7 +29,6 @@ export class App extends Component {
         <div>
           <Helmet
             title="National Forecast"
-            titleTemplate="%s - National Forecast"
             meta={[
               { charset: 'utf-8' },
               {
@@ -40,6 +39,23 @@ export class App extends Component {
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1',
               },
+              {
+                name: 'description',
+                content: 'National Forecast - Your Personal Helper!',
+              },
+              {
+                property: 'og:title',
+                content: 'National Forecast',
+              },
+              {
+                property: 'og:description',
+                content: 'National Forecast - Your Personal Helper!',
+              },
+              {
+                property: 'og: image',
+                content: '/img/vectorpaint.png',
+              },
+
             ]}
           />
           <div className={styles.wrapper}>
