@@ -16,7 +16,7 @@ export default {
     password_input_placeholder: "Enter password",
     or_text: "or",
     password_repeat_input_placeholder: "Repeat password",
-    temperature_chart: "temperature",
+    temperature_chart: "Temperature, °C",
     period_1: "today",
     period_3: "3 days",
     period_5: "5 days",

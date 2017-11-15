@@ -1,4 +1,4 @@
-import { SET_FORECAST, SET_PROVIDERS, UPDATE_PROVIDERS } from './ForecastActions';
+import { SET_FORECAST, SET_PROVIDERS, UPDATE_PROVIDERS, UPDATE_PROVIDER_RATING } from './ForecastActions';
 import _ from 'lodash';
 // Initial State
 const initialState = { providers: [], forecast: {} };
@@ -31,6 +31,23 @@ const ForecastReducer = (state = initialState, action) => {
         ...state,
         providers: providers
       };
+
+    case UPDATE_PROVIDER_RATING:
+      let providersArr = [...state.providers];
+      let provider = _.find(providersArr, function (item) {
+        return item.provider._id === action.id;
+      });
+      if (provider) {
+        provider.provider.rating = action.count;
+        return {
+          ...state,
+          providers: providersArr
+        };
+      } else {
+        return {
+          ...state
+        }
+      }
 
     default:
       return state;

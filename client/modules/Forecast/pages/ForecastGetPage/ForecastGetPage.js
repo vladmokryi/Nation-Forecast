@@ -73,7 +73,7 @@ class ForecastGetPage extends Component {
   };
 
   onClickSetRate = (id) => {
-    this.props.dispatch(setRating(id, this.handleFormSubmit.bind(this)));
+    this.props.dispatch(setRating(id, (res) => {}));
   };
 
   selectFavorite = (favorite) => {

@@ -2,7 +2,7 @@ import callApi from '../../util/apiCaller';
 export const UPDATE_RATING = 'UPDATE_RATING';
 export const SET_RATINGS = 'SET_RATINGS';
 export const SET_USER = 'SET_USER';
-import {fetchProviders} from '../Forecast/ForecastActions';
+import {setRatingToProvider} from '../Forecast/ForecastActions';
 
 export function signUpRequest(user, callback) {
   return (dispatch) => {
@@ -36,8 +36,8 @@ export function signOut() {
 export function setRating(providerId, callback) {
   return (dispatch) => {
     return callApi('ratings', 'post', {providerId}).then(res => {
-      dispatch(updateRating(res));
-      dispatch(fetchProviders());
+      dispatch(updateRating(res.rating));
+      dispatch(setRatingToProvider(res.providerId, res.count));
       callback();
     });
   };

@@ -4,6 +4,7 @@ import _ from 'lodash';
 export const SET_FORECAST = 'SET_FORECAST';
 export const SET_PROVIDERS = 'SET_PROVIDERS';
 export const UPDATE_PROVIDERS = 'UPDATE_PROVIDERS';
+export const UPDATE_PROVIDER_RATING = 'UPDATE_PROVIDER_RATING';
 
 export function setForecast(forecast) {
   return {
@@ -32,6 +33,13 @@ export function fetchForecast(data) {
       dispatch(setForecast(res.forecast));
       dispatch(updateProviders(res.providers));
     }).catch(err=> console.log(err));
+  };
+}
+
+export function setRatingToProvider(id, count) {
+  return {
+    type: UPDATE_PROVIDER_RATING,
+    id, count
   };
 }
 

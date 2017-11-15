@@ -1,4 +1,5 @@
 import Rating from '../models/rating';
+import Provider from '../models/provider';
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
@@ -18,14 +19,26 @@ export function getRatingsByUser(req, res) {
   }
 }
 
-export function setRating(req, res) {
+export function setRating(req, res, next) {
   if (req.user) {
     if (req.body.providerId) {
       Rating.findOne({user: req.user._id, provider: req.body.providerId}).then((rating)=> {
         if (rating) {
           //delete rate
           rating.remove().then(()=> {
-            res.json({[req.body.providerId]: false});
+            Provider.findOne({_id: req.body.providerId}).then((provider) => {
+              if (provider) {
+                res.json({
+                  providerId: req.body.providerId,
+                  rating: {[req.body.providerId]: false},
+                  count: provider.rating
+                });
+              } else {
+                res.status(404).send({});
+              }
+            }).catch((err)=> {
+              res.status(500).send({err});
+            });
           }).catch((err)=> {
             res.status(500).send({err});
           });
@@ -39,7 +52,15 @@ export function setRating(req, res) {
             if (err) {
               res.status(500).send({err});
             } else {
-              res.json({[req.body.providerId]: true});
+              Provider.findOne({_id: req.body.providerId}).then((provider) => {
+                if (provider) {
+                  res.json({providerId: req.body.providerId, rating: {[req.body.providerId]: true}, count: provider.rating});
+                } else {
+                  res.status(404).send({});
+                }
+              }).catch((err)=> {
+                res.status(500).send({err});
+              });
             }
           });
         }
