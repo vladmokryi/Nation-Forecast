@@ -20,8 +20,8 @@ const config = {
       apiUrl: process.env.WEATHERUNLOCKED_APIURL
     },
     wunderground: {
-      apiKey: process.env.WUNDERGROUND_APIKEY || '90206631ddd97610',
-      apiUrl: process.env.WUNDERGROUND_APIURL || 'http://api.wunderground.com/api/'
+      apiKey: process.env.WUNDERGROUND_APIKEY,
+      apiUrl: process.env.WUNDERGROUND_APIURL
     }
   },
   google: {
