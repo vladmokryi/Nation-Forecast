@@ -56,8 +56,16 @@
 }
 .provider .weather div.weather-graph {
   width: 100%;
-  height: 30px;
+  height: 35px;
 }
+
+.provider .weather hr {
+  border: none;
+  border-top: 1px solid #c9c9c9;
+  margin: 5px 10px 0;
+  width: 100%;
+}
+
 .provider .weather div.weather-day {
   align-self: center;
   flex: 1;
@@ -67,7 +75,7 @@
   border-right: 1px solid #c9c9c9;
 }
 
-.provider .weather div.weather-day:last-child {
+.provider .weather div.weather-day:nth-last-child(3) {
   border-right: none;
 }
 

@@ -70,6 +70,7 @@ function ForecastProviders(props) {
                     )
                   })
                 }
+                <hr />
                 <div className={styles["weather-graph"]}>
                   <ResponsiveContainer>
                     <AreaChart data={getChartData(item.list)} stackOffset="silhouette">

@@ -11,6 +11,13 @@
   width: 100%;
 }
 
+hr {
+  border: none;
+  border-top: 1px solid #c9c9c9;
+  margin: 5px 10px 0;
+  width: 100%;
+}
+
 @media screen and (max-width: 650px) {
   .forecast-current {
     margin-left: 0;
@@ -32,7 +39,7 @@
   padding-right: 0.5em;
 }
 
-.forecast-current .day-container:last-child .day {
+.forecast-current .day-container:nth-last-child(3) .day {
   border-right: none;
 }
 

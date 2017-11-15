@@ -18,13 +18,17 @@ const config = {
       apiKey: process.env.WEATHERUNLOCKED_APIKEY,
       appID: process.env.WEATHERUNLOCKED_APPID,
       apiUrl: process.env.WEATHERUNLOCKED_APIURL
+    },
+    wunderground: {
+      apiKey: process.env.WUNDERGROUND_APIKEY || '90206631ddd97610',
+      apiUrl: process.env.WUNDERGROUND_APIURL || 'http://api.wunderground.com/api/'
     }
   },
   google: {
     apikey: process.env.GOOGLE_APIKEY
   },
   cache: {
-    period: process.env.CACHE_PERIOD || 43200,
+    period: process.env.CACHE_PERIOD || 21600,
     range: process.env.CACHE_RANGE || 10
   },
   forecastPeriod: process.env.FORECAST_PERIOD || 7,

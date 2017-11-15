@@ -51,6 +51,9 @@ export function getForecasts(req, res, next) {
           (callback) => {
             getWeatherunlocked({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
           },
+          (callback) => {
+            getWUnderground({lat: lat, lon: lon, forecastPeriod: forecastPeriod}, callback);
+          },
         ], (err, results) => {
           req.forecastsIds = _.map(_.remove(results, null), '_id');
           next();
@@ -258,6 +261,44 @@ export function getWeatherunlocked(data, callback) {
             min: parseFloat(day.temp_min_c),
             max: parseFloat(day.temp_max_c),
             avg: (parseFloat(day.temp_min_c) + parseFloat(day.temp_max_c)) / 2,
+            weather: day
+          });
+        }
+      });
+      let forecast = {
+        provider: provider._id,
+        location: {
+          coordinates: [data.lon, data.lat]
+        },
+        list,
+      };
+      addForecast(forecast, callback);
+    }).catch((err)=> {
+      console.log(err);
+      callback(err)
+    });
+  }).catch((err)=> {
+    callback(err)
+  });
+}
+
+export function getWUnderground(data, callback) {
+  Provider.findOne({name: 'wunderground'}).then(provider => {
+    let forecastPeriod = data.forecastPeriod ? parseInt(data.forecastPeriod) : serverConfig.forecastPeriod;
+    let apiKey = serverConfig.providers.wunderground.apiKey;
+    let apiUrl = serverConfig.providers.wunderground.apiUrl;
+    let period = forecastPeriod > 4 ? '10day' : '';
+
+    let url = apiUrl + `${apiKey}/forecast${period}/q/${data.lat},${data.lon}.json`;
+    fetch(url).then(response => response.json()).then(response => {
+      let list = [];
+      _.forEach(response.forecast.simpleforecast.forecastday, function (day, index) {
+        if (index < forecastPeriod) {
+          list.push({
+            date: new Date(parseInt(day.date.epoch) * 1000),
+            min: parseFloat(day.low.celsius),
+            max: parseFloat(day.high.celsius),
+            avg: (parseFloat(day.low.celsius) + parseFloat(day.high.celsius)) / 2,
             weather: day
           });
         }

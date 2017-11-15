@@ -45,14 +45,15 @@ export default function ForecastCurrent(props) {
           </div>
         );
       })}
+      <hr />
       <div className={styles['forecast-current-graph']}>
-      <ResponsiveContainer>
-        <AreaChart data={chartData} stackOffset="silhouette">
-          <Tooltip/>
-          <Area type='monotone' dataKey='value' stroke='#8884d8' name={props.intl.formatMessage({id: "temperature_chart"})}  fill='#8884d8' />
-          <XAxis dataKey="name" hide={true}/>
-        </AreaChart>
-      </ResponsiveContainer>
+        <ResponsiveContainer>
+          <AreaChart data={chartData} stackOffset="silhouette">
+            <Tooltip/>
+            <Area type='monotone' dataKey='value' stroke='#8884d8' name={props.intl.formatMessage({id: "temperature_chart"})}  fill='#8884d8' />
+            <XAxis dataKey="name" hide={true}/>
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
     </div>
   )
