@@ -11,6 +11,8 @@ export function signUpRequest(user, callback) {
       dispatch(getRatings());
       dispatch(fetchUser());
       callback();
+    }).catch((err) => {
+      callback(err);
     });
   };
 }

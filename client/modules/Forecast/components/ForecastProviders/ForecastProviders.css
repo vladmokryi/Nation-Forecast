@@ -79,10 +79,11 @@
   border-right: none;
 }
 
-.provider .weather div.weather-day .avg span {
+.provider .weather div.weather-day .avg > span {
   display: block;
   color: #9d9d9d;
-  font-size: 80%
+  font-size: 80%;
+  white-space: nowrap;
 }
 
 .provider .give-rating {

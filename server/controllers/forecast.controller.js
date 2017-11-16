@@ -87,16 +87,24 @@ export function calculate(req, res) {
       let item = {
         date: new Date(req.forecasts[0].list[i].date),
         min: 0,
-        max: 0
+        max: 0,
+        humidity: 0,
+        wind: {
+          speed: 0
+        }
       };
       _.forEach(req.forecasts, forecast => {
         let day = forecast.list[i];
         item.min += day.min * forecast.provider.rating;
         item.max += day.max * forecast.provider.rating;
+        item.humidity += day.humidity * forecast.provider.rating;
+        item.wind.speed += day.wind.speed * forecast.provider.rating;
       });
       item.min /= allRating;
       item.max /= allRating;
       item.avg = (item.min + item.max) / 2;
+      item.humidity /= allRating;
+      item.wind.speed /= allRating;
       list.push(item);
     }
 
@@ -149,7 +157,14 @@ export function getOpenweathermap(data, callback) {
           min: parseFloat(day.temp.min),
           max: parseFloat(day.temp.max),
           avg: (parseFloat(day.temp.min) + parseFloat(day.temp.max)) / 2,
-          weather: day.weather
+          humidity: parseFloat(day.humidity) || 50,
+          pressure: parseFloat(day.pressure),
+          wind: {
+            speed: parseFloat(day.speed),
+            deg: parseFloat(day.deg),
+            gust: null,
+          },
+          weather: day
         });
       });
       let forecast = {
@@ -183,7 +198,14 @@ export function getApixu(data, callback) {
           min: parseFloat(day.day.mintemp_c),
           max: parseFloat(day.day.maxtemp_c),
           avg: (parseFloat(day.day.mintemp_c) + parseFloat(day.day.maxtemp_c)) / 2,
-          weather: day.day.condition
+          humidity: parseFloat(day.day.avghumidity),
+          pressure: null,
+          wind: {
+            speed: parseFloat(day.day.maxwind_kph) / 3.6,
+            deg: null,
+            gust: null,
+          },
+          weather: day
         });
       });
       let forecast = {
@@ -218,6 +240,13 @@ export function getDarksky(data, callback) {
             min: parseFloat(day.temperatureMin),
             max: parseFloat(day.temperatureMax),
             avg: (parseFloat(day.temperatureMin) + parseFloat(day.temperatureMax)) / 2,
+            humidity: parseFloat(day.humidity) * 100,
+            pressure: parseFloat(day.pressure),
+            wind: {
+              speed: parseFloat(day.windSpeed),
+              deg: parseInt(day.windBearing),
+              gust: parseFloat(day.windGust),
+            },
             weather: day
           });
         }
@@ -261,6 +290,13 @@ export function getWeatherunlocked(data, callback) {
             min: parseFloat(day.temp_min_c),
             max: parseFloat(day.temp_max_c),
             avg: (parseFloat(day.temp_min_c) + parseFloat(day.temp_max_c)) / 2,
+            humidity: (parseFloat(day.humid_max_pct) + parseFloat(day.humid_min_pct)) / 2,
+            pressure: (parseFloat(day.slp_max_mb) + parseFloat(day.slp_min_mb)) / 2,
+            wind: {
+              speed: parseFloat(day.windspd_max_ms),
+              deg: null,
+              gust: parseFloat(day.windgst_max_ms),
+            },
             weather: day
           });
         }
@@ -299,6 +335,13 @@ export function getWUnderground(data, callback) {
             min: parseFloat(day.low.celsius),
             max: parseFloat(day.high.celsius),
             avg: (parseFloat(day.low.celsius) + parseFloat(day.high.celsius)) / 2,
+            humidity: parseFloat(day.avehumidity),
+            pressure: null,
+            wind: {
+              speed: parseFloat(day.avewind.kph) / 3.6,
+              deg: parseFloat(day.avewind.degrees),
+              gust: parseFloat(day.maxwind.kph) / 3.6,
+            },
             weather: day
           });
         }

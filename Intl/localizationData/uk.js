@@ -21,5 +21,12 @@ export default {
     period_3: "3 дні",
     period_5: "5 днів",
     period_7: "тиждень",
+    already_have_account: "Вже є аккаунт?",
+    user_exists: "Електронна адреса вже існує!",
+    password_not_equal: "Паролі не співпадають!",
+    meter_per_second: "м/с",
+    wind_speed_avg: "Середня швидкість вітру",
+    wind_gust: "Пориви до",
+    humidity_title: "Вологість"
   },
 };

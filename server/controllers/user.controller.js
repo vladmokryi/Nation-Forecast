@@ -31,7 +31,7 @@ export function create(req, res) {
     User.findOne({ email: newUser.email })
       .then((emailUser) => {
         if (emailUser) {
-          res.status(403).end();
+          res.status(409).end();
         } else {
           return newUser.save();
         }

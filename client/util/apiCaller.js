@@ -17,9 +17,9 @@ const checkStatus = (response) => {
       localStorage.removeItem('authentication_token');
       getAuthenticationToken();
     } else {
-      var error = new Error(response.statusText);
+      let error = new Error(response.statusText);
       error.response = response;
-      throw error
+      throw error;
     }
     return Promise.reject(response);
   }

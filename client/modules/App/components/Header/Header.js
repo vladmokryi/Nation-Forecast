@@ -77,8 +77,8 @@ export class Header extends Component {
           this.state.isShowingModal &&
           <ModalContainer onClose={this.handleClose}>
             <ModalDialog onClose={this.handleClose}>
-              {this.state.modal === "signin" && <SignInWidget onClose={this.handleClose.bind(this)}/>}
-              {this.state.modal === "signup" && <SignUpWidget onClose={this.handleClose.bind(this)}/>}
+              {this.state.modal === "signin" && <SignInWidget onClose={this.handleClose.bind(this)} onSignUp={this.handleClick.bind(this, 'signup')}/>}
+              {this.state.modal === "signup" && <SignUpWidget onClose={this.handleClose.bind(this)} onSignIn={this.handleClick.bind(this, 'signin')}/>}
             </ModalDialog>
           </ModalContainer>
         }

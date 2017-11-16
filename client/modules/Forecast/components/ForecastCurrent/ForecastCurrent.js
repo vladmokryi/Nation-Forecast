@@ -2,8 +2,16 @@ import React, {Component, PropTypes} from 'react';
 import styles from './ForecastCurrent.css';
 import {FormattedDate, FormattedMessage} from 'react-intl'
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import {FaTint, FaFlag} from 'react-icons/lib/fa';
 
 export default function ForecastCurrent(props) {
+  let getWindTitle = (day) => {
+    let message = props.intl.formatMessage({id: 'wind_speed_avg'});
+    if (day.wind.gust && day.wind.speed !== day.wind.gust) {
+      message += '. ' + props.intl.formatMessage({id: 'wind_gust'}) + ' ' + day.wind.gust.toFixed(0) +  props.intl.formatMessage({id: 'meter_per_second'});
+    }
+    return message;
+  };
   let formatDate = (date, message) => {
     return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'})
       + ' ' + props.intl.formatMessage({id: message});
@@ -39,6 +47,19 @@ export default function ForecastCurrent(props) {
                 <div className={styles.max}>
                   <FormattedMessage id="max_title"/>
                   <div>{day.max.toFixed(1)}&deg;</div>
+                </div>
+              </div>
+
+              <div className={styles.temperature}>
+                <div className={styles.min}>
+                  <span title={props.intl.formatMessage({id: "humidity_title"})}>
+                    <FaTint color="#c9c9c9"/> {day.humidity.toFixed(0)}%
+                  </span>
+                </div>
+                <div className={styles.max}>
+                  <span title={getWindTitle(day)}>
+                    <FaFlag color="#c9c9c9"/> {day.wind.speed.toFixed(0)} <FormattedMessage id="meter_per_second"/>
+                  </span>
                 </div>
               </div>
             </div>

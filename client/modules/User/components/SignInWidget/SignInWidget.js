@@ -31,6 +31,7 @@ export class SignInWidget extends Component {
           <input className={styles["email-input"]} onChange={this.onChange} name="email" placeholder={this.props.intl.formatMessage({id: "email_input_placeholder"})} type="text" value={this.state.email}/>
           <input className={styles["password-input"]} onChange={this.onChange} name="password" placeholder={this.props.intl.formatMessage({id: "password_input_placeholder"})} type="password" value={this.state.password}/>
           <button className={styles["submit-btn"]} type="submit"><FormattedMessage id="signin_action"/></button>
+          <p><FormattedMessage id="or_text"/> <a onClick={this.props.onSignUp}><FormattedMessage id="signup_action"/></a></p>
         </form>
       </div>
     );

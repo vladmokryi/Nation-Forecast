@@ -35,7 +35,7 @@ form {
   vertical-align: baseline;
 
   background: transparent;
-
+  margin-bottom: 1em;
   font-weight: 700;
   font-style: normal;
   text-align: center;
@@ -44,4 +44,18 @@ form {
 
 .submit-btn:hover {
   border-color: #00AFF0;
+}
+
+a {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+p {
+  text-align: center;
+}
+
+.error-message {
+  margin-bottom: 1em;
+  color: #ff4444;
 }

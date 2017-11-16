@@ -2,10 +2,17 @@ import React, {Component, PropTypes} from 'react';
 import {injectIntl, FormattedMessage, FormattedDate} from 'react-intl';
 import styles from  './ForecastProviders.css';
 import {isLoggedIn} from '../../../../util/apiCaller';
-import {FaThumbsODown, FaThumbsOUp, FaArrowUp, FaArrowDown} from 'react-icons/lib/fa';
+import {FaThumbsODown, FaThumbsOUp, FaTint, FaFlag} from 'react-icons/lib/fa';
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 function ForecastProviders(props) {
+  let getWindTitle = (day) => {
+    let message = props.intl.formatMessage({id: 'wind_speed_avg'});
+    if (day.wind.gust && day.wind.speed !== day.wind.gust) {
+      message += '. ' + props.intl.formatMessage({id: 'wind_gust'}) + ' ' + day.wind.gust.toFixed(0) +  props.intl.formatMessage({id: 'meter_per_second'});
+    }
+    return message;
+  };
   let formatDate = (date, message) => {
     return props.intl.formatDate(date, { weekday: 'long'}) + ' ' +  props.intl.formatDate(date, { day: '2-digit', month: '2-digit'})
       + ' ' + props.intl.formatMessage({id: message});
@@ -65,6 +72,12 @@ function ForecastProviders(props) {
                         <div className={styles.avg}>
                           <FormattedMessage id="avg_title"/>
                           <div className={hightLightClass(day.avg, index)}>{day.avg.toFixed(2)}&deg;</div>
+                          <span title={props.intl.formatMessage({id: "humidity_title"})}>
+                            <FaTint color="#c9c9c9"/> {day.humidity.toFixed(0)}%
+                          </span>
+                          <span title={getWindTitle(day)}>
+                            <FaFlag color="#c9c9c9"/> {day.wind.speed.toFixed(0)} <FormattedMessage id="meter_per_second"/>
+                          </span>
                         </div>
                       </div>
                     )

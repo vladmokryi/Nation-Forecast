@@ -40,8 +40,18 @@ form {
   font-style: normal;
   text-align: center;
   text-decoration: none;
+  margin-bottom: 1em;
 }
 
 .submit-btn:hover {
   border-color: #00AFF0;
+}
+
+a {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+p {
+  text-align: center;
 }

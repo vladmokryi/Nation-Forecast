@@ -21,5 +21,12 @@ export default {
     period_3: "3 days",
     period_5: "5 days",
     period_7: "week",
+    already_have_account: "Already have an account?",
+    user_exists: "Email address already exists!",
+    password_not_equal: "Passwords do not match!",
+    meter_per_second: "m/s",
+    wind_speed_avg: "Average wind speed",
+    wind_gust: "Gust to",
+    humidity_title: "Humidity"
   },
 };

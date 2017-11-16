@@ -17,6 +17,13 @@ const forecastSchema = new Schema({
     min: { type: Number },
     max: { type: Number },
     avg: { type: Number },
+    humidity: { type: Number },
+    pressure: { type: Number },
+    wind: {
+      speed: { type: Number },
+      deg: { type: Number },
+      gust: { type: Number }
+    },
     weather: {}
   }],
   createdAt: { type: 'Date', default: Date.now},
