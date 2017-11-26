@@ -27,12 +27,17 @@ export function updateProviders(providers) {
   };
 }
 
-export function fetchForecast(data) {
+export function fetchForecast(data, callback) {
+  callback = callback ? callback : () => {};
   return (dispatch) => {
     return callApi(`forecast?lat=${data.lat}&lon=${data.lon}&period=${data.period}`).then(res => {
       dispatch(setForecast(res.forecast));
       dispatch(updateProviders(res.providers));
-    }).catch(err=> console.log(err));
+      callback();
+    }).catch(err=> {
+      console.log(err);
+      callback(err);
+    });
   };
 }
 
