@@ -27,6 +27,11 @@ export default {
     meter_per_second: "m/s",
     wind_speed_avg: "Average wind speed",
     wind_gust: "Gust to",
-    humidity_title: "Humidity"
+    humidity_title: "Humidity",
+    invalid_credential: "Invalid credential",
+    subject_input_placeholder: "Subject",
+    content_input_placeholder: "Text",
+    send_contact_action: "Send",
+    internal_error: "Internal Server Error",
   },
 };

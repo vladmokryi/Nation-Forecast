@@ -4,6 +4,8 @@ import Flag from 'react-flags';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 import SignUpWidget from '../../../User/components/SignUpWidget/SignUpWidget';
 import SignInWidget from '../../../User/components/SignInWidget/SignInWidget';
+import ContactWidget from '../../../User/components/ContactWidget/ContactWidget';
+import {FaEnvelope} from 'react-icons/lib/fa';
 import {signOut} from '../../../User/UserActions';
 
 // Import Style
@@ -71,7 +73,12 @@ export class Header extends Component {
              <FormattedMessage id="or_text"/><a href="#"
                                                 onClick={this.handleClick.bind(this, 'signup')}><FormattedMessage
               id="signup_action"/></a></div>}
-          {this.props.isLoggedIn && <a href="#" onClick={this.onSignOut.bind(this)}><FormattedMessage id="signout_action"/></a>}
+          {this.props.isLoggedIn &&
+            <div>
+              <a href="#" onClick={this.handleClick.bind(this, 'contact')}><FaEnvelope /></a>
+              <a href="#" onClick={this.onSignOut.bind(this)}><FormattedMessage id="signout_action"/></a>
+            </div>
+          }
         </div>
         {
           this.state.isShowingModal &&
@@ -79,6 +86,7 @@ export class Header extends Component {
             <ModalDialog onClose={this.handleClose}>
               {this.state.modal === "signin" && <SignInWidget onClose={this.handleClose.bind(this)} onSignUp={this.handleClick.bind(this, 'signup')}/>}
               {this.state.modal === "signup" && <SignUpWidget onClose={this.handleClose.bind(this)} onSignIn={this.handleClick.bind(this, 'signin')}/>}
+              {this.state.modal === "contact" && <ContactWidget onClose={this.handleClose.bind(this)}/>}
             </ModalDialog>
           </ModalContainer>
         }

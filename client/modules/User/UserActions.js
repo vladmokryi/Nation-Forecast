@@ -24,6 +24,18 @@ export function signInRequest(creds, callback) {
       dispatch(getRatings());
       dispatch(fetchUser());
       callback();
+    }).catch((err)=> {
+      callback(err);
+    });
+  };
+}
+
+export function sendContactForm(data, callback) {
+  return (dispatch) => {
+    return callApi('user/contact', 'post', data).then(res => {
+      callback();
+    }).catch((err)=> {
+      callback(err);
     });
   };
 }

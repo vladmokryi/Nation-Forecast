@@ -27,6 +27,11 @@ export default {
     meter_per_second: "м/с",
     wind_speed_avg: "Середня швидкість вітру",
     wind_gust: "Пориви до",
-    humidity_title: "Вологість"
+    humidity_title: "Вологість",
+    invalid_credential: "Недійсні облікові дані",
+    subject_input_placeholder: "Тема",
+    content_input_placeholder: "Текст",
+    send_contact_action: "Надіслати",
+    internal_error: "Серверна помилка",
   },
 };

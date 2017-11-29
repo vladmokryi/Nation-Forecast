@@ -25,6 +25,7 @@
   "author": "Vlad Mokryi <vladmokryi@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^6.1.4",
     "async": "^2.1.2",
     "babel-core": "^6.9.1",
     "body-parser": "^1.15.1",

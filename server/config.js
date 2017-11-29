@@ -31,6 +31,10 @@ const config = {
     period: process.env.CACHE_PERIOD || 21600,
     range: process.env.CACHE_RANGE || 10
   },
+  sendgrid: {
+    apiKey: process.env.SENDGRID_APIKEY
+  },
+  contactEmail: process.env.CONTACT_EMAIL,
   forecastPeriod: process.env.FORECAST_PERIOD || 7,
   jwt_token: process.env.JWT_TOKEN || 'forecast',
 };

@@ -77,3 +77,21 @@ export function addFavoriteLocation(req, res) {
     res.status(403).end();
   }
 }
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(serverConfig.sendgrid.apiKey);
+
+export function sendContactEmail(req, res) {
+  if (req.user) {
+    const msg = {
+      to: serverConfig.contactEmail,
+      from: 'contact@national-forecast.com',
+      subject: req.body.subject,
+      text: 'From ' + req.body.email,
+      html: req.body.text,
+    };
+    sgMail.send(msg);
+  } else {
+    res.status(403).end();
+  }
+}

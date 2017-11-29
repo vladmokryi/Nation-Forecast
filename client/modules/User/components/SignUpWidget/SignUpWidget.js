@@ -39,9 +39,9 @@ export class SignUpWidget extends Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <input className={styles["email-input"]} onChange={this.onChange} name="email" placeholder={this.props.intl.formatMessage({id: "email_input_placeholder"})} type="text" value={this.state.email}/>
-          <input className={styles["password-input"]} onChange={this.onChange} name="password" placeholder={this.props.intl.formatMessage({id: "password_input_placeholder"})} type="password" value={this.state.password}/>
-          <input className={styles["password-repeat-input"]} onChange={this.onChange} name="password_repeat" placeholder={this.props.intl.formatMessage({id: "password_repeat_input_placeholder"})} type="password" value={this.state.password_repeat}/>
+          <input required="required" className={styles["email-input"]} onChange={this.onChange} name="email" placeholder={this.props.intl.formatMessage({id: "email_input_placeholder"})} type="text" value={this.state.email}/>
+          <input required="required" className={styles["password-input"]} onChange={this.onChange} name="password" placeholder={this.props.intl.formatMessage({id: "password_input_placeholder"})} type="password" value={this.state.password}/>
+          <input required="required" className={styles["password-repeat-input"]} onChange={this.onChange} name="password_repeat" placeholder={this.props.intl.formatMessage({id: "password_repeat_input_placeholder"})} type="password" value={this.state.password_repeat}/>
           <button className={styles["submit-btn"]} type="submit"><FormattedMessage id="signup_action"/></button>
           { this.state.errorMessage && <p className={styles["error-message"]} >{this.state.errorMessage}</p>}
           <p><FormattedMessage id="already_have_account"/> <a onClick={this.props.onSignIn}><FormattedMessage id="signin_action"/></a></p>

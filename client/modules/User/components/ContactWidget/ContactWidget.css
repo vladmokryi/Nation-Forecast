@@ -3,7 +3,7 @@ form {
   flex-direction: column;
 }
 
-.email-input, .password-input {
+.subject-input, .content-input, .email-input {
   display: block;
   margin: 0;
   font-family: sans-serif;
@@ -13,9 +13,10 @@ form {
   padding: 10px;
   border: solid 5px #c9c9c9;
   margin-bottom: 1em;
+  resize: none;
 }
 
-.email-input:focus, .password-input:focus{
+.subject-input:focus, .content-input:focus, .email-input:focus {
   outline: none;
   border: solid 5px #00AFF0;
 }
