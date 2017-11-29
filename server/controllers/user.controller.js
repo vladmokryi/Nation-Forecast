@@ -85,12 +85,14 @@ export function sendContactEmail(req, res) {
   if (req.user) {
     const msg = {
       to: serverConfig.contactEmail,
-      from: 'contact@national-forecast.com',
+      from: 'National Forecast <contact@national-forecast.com>',
       subject: req.body.subject,
       text: 'From ' + req.body.email,
       html: req.body.text,
     };
-    sgMail.send(msg);
+    sgMail.send(msg,false,() => {
+      res.status(200).send({});
+    });
   } else {
     res.status(403).end();
   }
