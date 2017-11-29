@@ -15,8 +15,8 @@ export class ContactWidget extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     this.setState({errorMessage: ''});
-    if (this.state.subject && this.state.email && this.state.content) {
-      let data = { email: this.state.email, subject: this.state.subject, text: this.state.content };
+    if (this.state.subject && this.state.content) {
+      let data = { subject: this.state.subject, text: this.state.content };
       this.props.dispatch(sendContactForm(data, (err)=> {
         if (err) {
           this.setState({errorMessage: this.props.intl.formatMessage({id: "internal_error"})});
@@ -35,7 +35,6 @@ export class ContactWidget extends Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <input className={styles["email-input"]} onChange={this.onChange} name="email" placeholder={this.props.intl.formatMessage({id: "email_input_placeholder"})} type="email" required="required" value={this.state.email}/>
           <input className={styles["subject-input"]} onChange={this.onChange} name="subject" placeholder={this.props.intl.formatMessage({id: "subject_input_placeholder"})} type="text" required="required" value={this.state.subject}/>
           <textarea placeholder={this.props.intl.formatMessage({id: "content_input_placeholder"})} required="required" rows="8" className={styles["content-input"]} onChange={this.onChange} name="content"></textarea>
           <button className={styles["submit-btn"]} type="submit"><FormattedMessage id="send_contact_action"/></button>

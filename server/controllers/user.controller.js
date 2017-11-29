@@ -86,9 +86,8 @@ export function sendContactEmail(req, res) {
     const msg = {
       to: serverConfig.contactEmail,
       from: 'National Forecast <contact@national-forecast.com>',
-      subject: req.body.subject,
-      text: 'From ' + req.body.email,
-      html: req.body.text,
+      subject: 'Contact form',
+      html: '<p><b>From:</b> ' + req.user.email + ' <b>Subject:</b> ' + req.body.subject + '</p><p><b>Text:</b></p>' + req.body.text,
     };
     sgMail.send(msg,false,() => {
       res.status(200).send({});
