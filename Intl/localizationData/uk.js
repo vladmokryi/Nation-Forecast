@@ -33,6 +33,6 @@ export default {
     content_input_placeholder: "Текст",
     send_contact_action: "Надіслати",
     internal_error: "Серверна помилка",
-    spinner: "Розраховуємо прогноз для Вас...",
+    spinner: "ЗБИРАЄМО ДАНІ ДЛЯ ВАС... ХВИЛИНКУ",
   },
 };
