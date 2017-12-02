@@ -129,7 +129,7 @@ class ForecastGetPage extends Component {
   };
 
   dynamicShareLink = (type) => {
-    const link = typeof window !== 'undefined' ? window.location.origin + (this.state.address ?  '?q=' + this.state.address : '') : '';
+    const link = encodeURI(typeof window !== 'undefined' ? window.location.origin + (this.state.address ?  '?q=' + this.state.address : '') : '');
     switch (type) {
       case 'tw':
         return 'https://twitter.com/share?url=' + link;

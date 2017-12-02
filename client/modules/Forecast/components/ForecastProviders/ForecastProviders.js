@@ -2,8 +2,9 @@ import React, {Component, PropTypes} from 'react';
 import {injectIntl, FormattedMessage, FormattedDate} from 'react-intl';
 import styles from  './ForecastProviders.css';
 import {isLoggedIn} from '../../../../util/apiCaller';
-import {FaThumbsODown, FaThumbsOUp, FaTint, FaFlag} from 'react-icons/lib/fa';
+import {FaThumbsUp, FaThumbsOUp, FaTint, FaFlag} from 'react-icons/lib/fa';
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import * as _ from "lodash";
 
 function ForecastProviders(props) {
   let getWindTitle = (day) => {
@@ -41,6 +42,14 @@ function ForecastProviders(props) {
     }
   };
 
+  let isHasActiveRate = false;
+  _.forEach(props.providers, (item)=> {
+    let active = !!props.ratings[item.provider._id];
+    if (active) {
+      isHasActiveRate = true;
+    }
+  });
+
   return (
     <div className={styles.container}>
       {props.providers.map(item => {
@@ -56,8 +65,8 @@ function ForecastProviders(props) {
               </div>
               { props.isLoggedIn &&
                 <div onClick={props.onClick.bind(this, item.provider._id)} className={styles["give-rating"]}>
-                  {active && <FaThumbsODown color="#c9c9c9" size={30}/>}
-                  {!active && <FaThumbsOUp color="#c9c9c9" size={30}/>}
+                  {active && <FaThumbsUp color="#00aff0" size={40}/>}
+                  {!active && !isHasActiveRate && <FaThumbsOUp color="#c9c9c9" size={30}/>}
                 </div>
               }
             </div>

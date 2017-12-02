@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const ratingSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   provider: { type: Schema.Types.ObjectId, ref: 'Provider', required: true },
+  date: { type: Schema.Types.Date, required: true },
 });
 
 ratingSchema.post('save', function(doc) {

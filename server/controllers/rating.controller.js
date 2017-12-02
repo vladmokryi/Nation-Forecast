@@ -5,13 +5,14 @@ import mongoose from 'mongoose';
 
 export function getRatingsByUser(req, res) {
   if (req.user) {
-    Rating.find({user: req.user._id}).then((ratings)=> {
+    let date = new Date(+new Date() - 60 * 60 * 24 * 1000);
+    Rating.find({user: req.user._id, date: {$gte: date}}).then((ratings) => {
       let resObj = {};
-      _.forEach(ratings, (rate)=> {
+      _.forEach(ratings, (rate) => {
         resObj[rate.provider] = true;
       });
       res.json({ratings: resObj});
-    }).catch((err)=> {
+    }).catch((err) => {
       res.status(500).send(err);
     });
   } else {
@@ -22,10 +23,10 @@ export function getRatingsByUser(req, res) {
 export function setRating(req, res, next) {
   if (req.user) {
     if (req.body.providerId) {
-      Rating.findOne({user: req.user._id, provider: req.body.providerId}).then((rating)=> {
+      Rating.findOne({user: req.user._id, provider: req.body.providerId}).then((rating) => {
         if (rating) {
           //delete rate
-          rating.remove().then(()=> {
+          rating.remove().then(() => {
             Provider.findOne({_id: req.body.providerId}).then((provider) => {
               if (provider) {
                 res.json({
@@ -36,17 +37,18 @@ export function setRating(req, res, next) {
               } else {
                 res.status(404).send({});
               }
-            }).catch((err)=> {
+            }).catch((err) => {
               res.status(500).send({err});
             });
-          }).catch((err)=> {
+          }).catch((err) => {
             res.status(500).send({err});
           });
         } else {
           //add rating
           let data = {
-            user : req.user._id,
-            provider : req.body.providerId,
+            user: req.user._id,
+            provider: req.body.providerId,
+            date: new Date()
           };
           addRating(data, (err) => {
             if (err) {
@@ -54,17 +56,21 @@ export function setRating(req, res, next) {
             } else {
               Provider.findOne({_id: req.body.providerId}).then((provider) => {
                 if (provider) {
-                  res.json({providerId: req.body.providerId, rating: {[req.body.providerId]: true}, count: provider.rating});
+                  res.json({
+                    providerId: req.body.providerId,
+                    rating: {[req.body.providerId]: true},
+                    count: provider.rating
+                  });
                 } else {
                   res.status(404).send({});
                 }
-              }).catch((err)=> {
+              }).catch((err) => {
                 res.status(500).send({err});
               });
             }
           });
         }
-      }).catch((err)=> {
+      }).catch((err) => {
         res.status(500).send({err});
       });
     } else {
