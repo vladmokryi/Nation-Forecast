@@ -33,5 +33,6 @@ export default {
     content_input_placeholder: "Text",
     send_contact_action: "Send",
     internal_error: "Internal Server Error",
+    spinner: "LOOKING OUTSIDE FOR YOU... ONE SEC",
   },
 };

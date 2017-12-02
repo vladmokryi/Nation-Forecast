@@ -247,7 +247,7 @@ class ForecastGetPage extends Component {
           </div>
 
           <div className={styles["text"]}>
-            LOOKING OUTSIDE FOR YOU... ONE SEC
+            <FormattedMessage id="spinner"/>
           </div>
         </div>
         }
