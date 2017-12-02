@@ -193,7 +193,7 @@ class ForecastGetPage extends Component {
           <ForecastLocationMap marker={this.state.marker}/>
           <ForecastCurrent intl={this.props.intl} forecast={this.props.forecast}/>
         </div>}
-        { this.state.loading &&
+        {
         <div className={styles["preloader"]}>
           <svg version="1.1" className={styles["sun"]} id="sun" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                width="10px" height="10px" viewBox="0 0 10 10">
