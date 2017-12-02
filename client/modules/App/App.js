@@ -64,6 +64,7 @@ export class App extends Component {
               languages={this.props.intlObj.enabledLanguages}
               dispatch={this.props.dispatch}
               isLoggedIn={this.props.isLoggedIn}
+              locale={this.props.intlObj.locale}
             />
             <div className={styles.container}>
               {this.props.children}

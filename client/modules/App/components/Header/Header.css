@@ -41,6 +41,15 @@
   margin: 0;
   padding: 5px;
   cursor: pointer;
+  opacity: 0.5;
+}
+
+.language-switcher li:hover {
+  opacity: 0.9;
+}
+
+.language-switcher li.selected {
+  opacity: 1;
 }
 
 .user-bar a{

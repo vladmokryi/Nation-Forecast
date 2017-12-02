@@ -41,7 +41,7 @@ export class Header extends Component {
         }
         return (
           <li key={lang} onClick={() => this.props.switchLanguage(lang)}
-              className={lang === this.props.intl.locale ? styles.selected : ''}>
+              className={lang === this.props.locale ? styles.selected : ''}>
             <Flag
               name={icon}
             />
@@ -102,6 +102,7 @@ Header.contextTypes = {
 Header.propTypes = {
   switchLanguage: PropTypes.func.isRequired,
   languages: PropTypes.array,
+  locale: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
 };
 
