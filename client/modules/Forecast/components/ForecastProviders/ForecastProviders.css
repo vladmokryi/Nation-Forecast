@@ -21,6 +21,12 @@
   flex-flow: row nowrap;
 }
 
+.provider .name.full {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .provider .name > .info {
   flex: 1;
 }
@@ -89,6 +95,10 @@
 .provider .give-rating {
   cursor: pointer;
   align-self: center;
+}
+
+.provider .name.full .give-rating {
+  display: none;
 }
 
 .text-success-light {

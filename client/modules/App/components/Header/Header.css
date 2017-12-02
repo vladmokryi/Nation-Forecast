@@ -53,3 +53,11 @@
   display: none;
 }
 
+@media screen and (max-width: 455px) {
+  .full-project-name {
+    display: none;
+  }
+  .short-project-name {
+    display: initial;
+  }
+}

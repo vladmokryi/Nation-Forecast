@@ -49,6 +49,7 @@ function ForecastProviders(props) {
       isHasActiveRate = true;
     }
   });
+  let cssClass = styles["name"] + (!props.showAll ? ' ' + styles["full"]: '');
 
   return (
     <div className={styles.container}>
@@ -56,7 +57,7 @@ function ForecastProviders(props) {
         let active = !!props.ratings[item.provider._id];
         return (
           <div className={styles.provider} key={item.provider._id}>
-            <div className={styles["name"]}>
+            <div className={cssClass}>
               <div className={styles["info"]}>
                 <a target="_blank" href={item.provider.link}>
                   {item.provider.displayName}
@@ -70,7 +71,7 @@ function ForecastProviders(props) {
                 </div>
               }
             </div>
-            <div className={styles["weather"]}>
+            { props.showAll && <div className={styles["weather"]}>
               {item.list &&
               <div>
                 {
@@ -85,7 +86,8 @@ function ForecastProviders(props) {
                             <FaTint color="#c9c9c9"/> {day.humidity.toFixed(0)}%
                           </span>
                           <span title={getWindTitle(day)}>
-                            <FaFlag color="#c9c9c9"/> {day.wind.speed.toFixed(0)} <FormattedMessage id="meter_per_second"/>
+                            <FaFlag color="#c9c9c9"/> {day.wind.speed.toFixed(0)} <FormattedMessage
+                            id="meter_per_second"/>
                           </span>
                         </div>
                       </div>
@@ -97,14 +99,16 @@ function ForecastProviders(props) {
                   <ResponsiveContainer>
                     <AreaChart data={getChartData(item.list)} stackOffset="silhouette">
                       <Tooltip/>
-                      <Area type='monotone' dataKey='value' name={props.intl.formatMessage({id: "temperature_chart"})} stroke='#8884d8' fill='#8884d8'/>
+                      <Area type='monotone' dataKey='value' name={props.intl.formatMessage({id: "temperature_chart"})}
+                            stroke='#8884d8' fill='#8884d8'/>
                       <XAxis dataKey="name" hide={true}/>
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </div>
-                }
+              }
             </div>
+            }
           </div>
         )
       })}
