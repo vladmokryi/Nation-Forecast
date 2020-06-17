@@ -1,37 +1,24 @@
-import Express, {Router}  from 'express';
+import Express, {Router} from 'express';
 import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
 import IntlWrapper from '../client/modules/Intl/IntlWrapper';
-
 // Webpack Requirements
 import webpack from 'webpack';
 import config from '../webpack.config.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-
-// Initialize the Express App
-const app = new Express();
-
-// Run Webpack dev server in development mode
-if (process.env.NODE_ENV === 'development') {
-  const compiler = webpack(config);
-  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
-  app.use(webpackHotMiddleware(compiler));
-}
-
 // React And Redux Setup
-import { configureStore } from '../client/store';
-import { Provider } from 'react-redux';
+import {configureStore} from '../client/store';
+import {Provider} from 'react-redux';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import {renderToString} from 'react-dom/server';
+import {match, RouterContext} from 'react-router';
 import Helmet from 'react-helmet';
-
 // Import required modules
 import routes from '../client/routes';
-import { fetchComponentData } from './util/fetchData';
+import {fetchComponentData} from './util/fetchData';
 import forecasts from './routes/forecast.routes';
 import providers from './routes/provider.routes';
 import auth from './routes/auth.routes';
@@ -40,6 +27,18 @@ import ratings from './routes/rating.routes';
 import initData from './initData';
 import serverConfig from './config';
 import User from './models/user';
+import passport from 'passport';
+import {ExtractJwt, Strategy as JwtStrategy} from 'passport-jwt';
+
+// Initialize the Express App
+const app = new Express();
+
+// Run Webpack dev server in development mode
+if (process.env.NODE_ENV === 'development') {
+  const compiler = webpack(config);
+  app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}));
+  app.use(webpackHotMiddleware(compiler));
+}
 
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
@@ -55,15 +54,12 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
   initData();
 });
 
-import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-
 var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
 opts.secretOrKey = serverConfig.jwt_token;
 
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-  User.findOne({ cuid: jwt_payload.sub }).then(user => {
+  User.findOne({cuid: jwt_payload.sub}).then(user => {
     if (user) {
       done(null, user);
     } else {
@@ -75,16 +71,16 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 }));
 
 const useRoutes = (routes) => {
-  let protectedMiddleware = passport.authenticate('jwt', { session: false });
+  let protectedMiddleware = passport.authenticate('jwt', {session: false});
   app.use('/api', routes(new Router(), protectedMiddleware));
 };
 
 // Apply body Parser and server public assets and routes
 app.use(compression());
-app.use(bodyParser.json({ limit: '20mb' }));
-app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
+app.use(bodyParser.json({limit: '20mb'}));
+app.use(bodyParser.urlencoded({limit: '20mb', extended: false}));
 app.use(Express.static(path.resolve(__dirname, '../dist')));
-app.use('/img', Express.static(path.resolve(__dirname, '../img') ));
+app.use('/img', Express.static(path.resolve(__dirname, '../img')));
 
 useRoutes(forecasts);
 useRoutes(providers);
@@ -115,13 +111,30 @@ const renderFullPage = (html, initialState) => {
         <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'/>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=${serverConfig.google.apikey}&libraries=geometry,places,visualization"></script>
         <link rel="shortcut icon" href="/img/favicon.ico" type="image/png" />
+        <!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1148896022154838');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1148896022154838&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
       </head>
       <body>
         <div id="root">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           ${process.env.NODE_ENV === 'production' ?
-          `//<![CDATA[
+    `//<![CDATA[
           window.webpackManifest = ${JSON.stringify(chunkManifest)};
           //]]>` : ''}
         </script>
@@ -141,7 +154,7 @@ const renderError = err => {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res, next) => {
-  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+  match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
     if (err) {
       return res.status(500).end(renderError(err));
     }
