@@ -128,6 +128,9 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1148896022154838&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Facebook Pixel Code -->
+<script>
+  fbq('track', 'Lead');
+</script>
       </head>
       <body>
         <div id="root">${html}</div>
